@@ -1,0 +1,20 @@
+symfony server:start --allow-all-ip --no-tls --allow-http --port=8000
+docker exec -ti symfony-spotify bash
+docker exec -ti mysql_spotify bash
+php bin/console make:entity
+php bin/console make:migration
+php bin/console doctrine:migrations:migrate
+php bin/console make:controller TareaController
+
+
+Dashboard:
+composer require easycorp/easyadmin-bundle
+apt-get install zip
+composer require symfony/maker-bundle --dev
+php bin/console cache:clear
+
+//Crea un controlador para el dashboard DASHBOARDCONTROLLER:
+php bin/console make:admin:dashboard
+
+//Utiliza el generador de EasyAdmin para crear el CRUD:
+php bin/console make:admin:crud

@@ -58,7 +58,7 @@ class Cancion
         return $this->titulo;
     }
 
-    public function setTitulo(string $titulo): static
+    public function setTitulo(string $titulo)
     {
         $this->titulo = $titulo;
 
@@ -70,7 +70,7 @@ class Cancion
         return $this->duracion;
     }
 
-    public function setDuracion(int $duracion): static
+    public function setDuracion(int $duracion)
     {
         $this->duracion = $duracion;
 
@@ -82,7 +82,7 @@ class Cancion
         return $this->album;
     }
 
-    public function setAlbum(?string $album): static
+    public function setAlbum(?string $album)
     {
         $this->album = $album;
 
@@ -94,7 +94,7 @@ class Cancion
         return $this->autor;
     }
 
-    public function setAutor(string $autor): static
+    public function setAutor(string $autor)
     {
         $this->autor = $autor;
 
@@ -106,7 +106,7 @@ class Cancion
         return $this->reproducciones;
     }
 
-    public function setReproducciones(int $reproducciones): static
+    public function setReproducciones(int $reproducciones)
     {
         $this->reproducciones = $reproducciones;
 
@@ -118,7 +118,7 @@ class Cancion
         return $this->likes;
     }
 
-    public function setLikes(int $likes): static
+    public function setLikes(int $likes)
     {
         $this->likes = $likes;
 
@@ -130,7 +130,7 @@ class Cancion
         return $this->genero;
     }
 
-    public function setGenero(?Estilo $genero): static
+    public function setGenero(?Estilo $genero)
     {
         $this->genero = $genero;
 
@@ -145,7 +145,7 @@ class Cancion
         return $this->playlistCancions;
     }
 
-    public function addPlaylistCancion(PlaylistCancion $playlistCancion): static
+    public function addPlaylistCancion(PlaylistCancion $playlistCancion)
     {
         if (!$this->playlistCancions->contains($playlistCancion)) {
             $this->playlistCancions->add($playlistCancion);
@@ -155,7 +155,7 @@ class Cancion
         return $this;
     }
 
-    public function removePlaylistCancion(PlaylistCancion $playlistCancion): static
+    public function removePlaylistCancion(PlaylistCancion $playlistCancion)
     {
         if ($this->playlistCancions->removeElement($playlistCancion)) {
             // set the owning side to null (unless already changed)

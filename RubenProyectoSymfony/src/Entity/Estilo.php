@@ -45,7 +45,7 @@ class Estilo
         return $this->nombre;
     }
 
-    public function setNombre(string $nombre): static
+    public function setNombre(string $nombre)
     {
         $this->nombre = $nombre;
 
@@ -57,7 +57,7 @@ class Estilo
         return $this->descripcion;
     }
 
-    public function setDescripcion(string $descripcion): static
+    public function setDescripcion(string $descripcion)
     {
         $this->descripcion = $descripcion;
 
@@ -69,7 +69,7 @@ class Estilo
         return $this->perfil;
     }
 
-    public function setPerfil(?Perfil $perfil): static
+    public function setPerfil(?Perfil $perfil)
     {
         $this->perfil = $perfil;
 
@@ -84,7 +84,7 @@ class Estilo
         return $this->cancions;
     }
 
-    public function addCancion(Cancion $cancion): static
+    public function addCancion(Cancion $cancion)
     {
         if (!$this->cancions->contains($cancion)) {
             $this->cancions->add($cancion);
@@ -94,7 +94,7 @@ class Estilo
         return $this;
     }
 
-    public function removeCancion(Cancion $cancion): static
+    public function removeCancion(Cancion $cancion)
     {
         if ($this->cancions->removeElement($cancion)) {
             // set the owning side to null (unless already changed)

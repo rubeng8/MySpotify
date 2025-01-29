@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use App\Entity\Cancion;
+use App\Entity\Estilo;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -43,5 +44,7 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Canciones', 'fas fa-list', Cancion::class);
+        yield MenuItem::linkToCrud('Estilos', 'fas fa-list', Estilo::class);
+
     }
 }

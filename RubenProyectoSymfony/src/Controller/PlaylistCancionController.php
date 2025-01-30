@@ -27,11 +27,16 @@ final class PlaylistCancionController extends AbstractController
     public function crearPlaylistCancion(EntityManagerInterface $entityManager): Response
     {
         $playlistCancion=new PlaylistCancion();
-
         $cancion = $entityManager->getRepository(Cancion::class)->find(1);
+        if ($cancion === null) {
+            return new Response('cancion con ID 1 no encontrado', Response::HTTP_NOT_FOUND);
+        }
         $playlistCancion->setCancion($cancion);
 
         $playlist = $entityManager->getRepository(Playlist::class)->find(1);
+        if ($playlist === null) {
+            return new Response('playlist con ID 1 no encontrado', Response::HTTP_NOT_FOUND);
+        }
         $playlistCancion->setPlaylist($playlist);
 
         $entityManager->persist($playlistCancion);

@@ -30,6 +30,10 @@ final class PerfilController extends AbstractController
 
         $estilo = $entityManager->getRepository(Estilo::class)->find(1);
 
+        if ($perfil === null) {
+            return new Response('Perfil con ID 1 no encontrado', Response::HTTP_NOT_FOUND);
+        }
+
         $perfil->addEstiloMusicalPreferido($estilo); 
 
         $entityManager->persist($perfil);

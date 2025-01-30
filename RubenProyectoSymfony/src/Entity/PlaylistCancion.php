@@ -14,7 +14,6 @@ class PlaylistCancion
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'playlistCancions')]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Playlist $playlist = null;
 
     #[ORM\ManyToOne(inversedBy: 'playlistCancions')]

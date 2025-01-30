@@ -29,7 +29,6 @@ class Usuario
     private ?\DateTimeInterface $fechaNacimiento = null;
 
     #[ORM\OneToOne(inversedBy: 'usuario', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
     private ?Perfil $perfil = null;
 
     /**

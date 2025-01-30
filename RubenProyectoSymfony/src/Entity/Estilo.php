@@ -27,7 +27,8 @@ class Estilo
     /**
      * @var Collection<int, Cancion>
      */
-    #[ORM\OneToMany(targetEntity: Cancion::class, mappedBy: 'genero')]
+    #[ORM\ManyToMany(targetEntity: Cancion::class, inversedBy: 'generos')]
+    #[ORM\JoinTable(name: 'estilo_cancion')] // Nombre de la tabla intermedia
     private Collection $cancions;
 
     public function __construct()
@@ -88,7 +89,8 @@ class Estilo
     {
         if (!$this->cancions->contains($cancion)) {
             $this->cancions->add($cancion);
-            $cancion->setGenero($this);
+            // Para una relación ManyToMany, no es necesario modificar la propiedad de la otra parte aquí
+            $cancion->addEstilo($this);  // Agregar este estilo a la canción (si es necesario)
         }
 
         return $this;
@@ -97,10 +99,8 @@ class Estilo
     public function removeCancion(Cancion $cancion)
     {
         if ($this->cancions->removeElement($cancion)) {
-            // set the owning side to null (unless already changed)
-            if ($cancion->getGenero() === $this) {
-                $cancion->setGenero(null);
-            }
+            // Para una relación ManyToMany, no es necesario modificar la propiedad de la otra parte aquí
+            $cancion->removeEstilo($this);  // Eliminar este estilo de la canción (si es necesario)
         }
 
         return $this;

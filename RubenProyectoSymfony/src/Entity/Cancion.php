@@ -33,9 +33,11 @@ class Cancion
     #[ORM\Column]
     private ?int $likes = null;
 
-    #[ORM\ManyToOne(inversedBy: 'cancions')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Estilo $genero = null;
+    /**
+     * @var Collection<int, Estilo>
+     */
+    #[ORM\ManyToMany(targetEntity: Estilo::class, mappedBy: 'cancions')]
+    private Collection $generos;
 
     /**
      * @var Collection<int, PlaylistCancion>
@@ -45,6 +47,7 @@ class Cancion
 
     public function __construct()
     {
+        $this->generos = new ArrayCollection();
         $this->playlistCancions = new ArrayCollection();
     }
 
@@ -125,14 +128,29 @@ class Cancion
         return $this;
     }
 
-    public function getGenero(): ?Estilo
+    /**
+     * @return Collection<int, Estilo>
+     */
+    public function getGeneros(): Collection
     {
-        return $this->genero;
+        return $this->generos;
     }
 
-    public function setGenero(?Estilo $genero)
+    public function addEstilo(Estilo $estilo)
     {
-        $this->genero = $genero;
+        if (!$this->generos->contains($estilo)) {
+            $this->generos->add($estilo);
+            $estilo->addCancion($this);  // Asegura la relación bidireccional
+        }
+
+        return $this;
+    }
+
+    public function removeEstilo(Estilo $estilo)
+    {
+        if ($this->generos->removeElement($estilo)) {
+            $estilo->removeCancion($this);  // Asegura la relación bidireccional
+        }
 
         return $this;
     }

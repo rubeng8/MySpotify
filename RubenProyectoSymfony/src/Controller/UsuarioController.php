@@ -33,6 +33,9 @@ final class UsuarioController extends AbstractController
         $usuario->setFechaNacimiento($fechaNacimiento);
         
         $perfil = $entityManager->getRepository(Perfil::class)->find(1);
+        if ($perfil === null) {
+            return new Response('perfil con ID 1 no encontrado', Response::HTTP_NOT_FOUND);
+        }
 
         $usuario->setPerfil($perfil);
 

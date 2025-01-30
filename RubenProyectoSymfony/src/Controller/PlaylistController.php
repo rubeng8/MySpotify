@@ -34,6 +34,9 @@ final class PlaylistController extends AbstractController
 
         
         $usuario = $entityManager->getRepository(Usuario::class)->find(1);
+        if ($usuario === null) {
+            return new Response('usuario con ID 1 no encontrado', Response::HTTP_NOT_FOUND);
+        }
 
         $playlist->setPropietario($usuario);
 

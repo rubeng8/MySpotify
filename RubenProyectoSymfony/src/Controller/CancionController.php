@@ -24,25 +24,25 @@ final class CancionController extends AbstractController
     #[Route('/Cancion/new', name: 'app_crearCancion')]
     public function crearCancion(EntityManagerInterface $entityManager): Response
     {
-        $cancion=new Cancion();
+        $cancion = new Cancion();
         $cancion->setTitulo("Vivire");
-        $cancion->setDuracion(3.55);
-        $cancion->setAlbum("Viviré");
+        $cancion->setDuracion(3.55); 
+        $cancion->setAlbum("Vivire");
         $cancion->setAutor("Camaron de la isla");
         $cancion->setReproducciones(500000);
         $cancion->setLikes(20000);
 
         $estilo = $entityManager->getRepository(Estilo::class)->find(1);
 
-        $cancion->setGenero($estilo);
+        if ($estilo === null) {
+            return new Response('Estilo con ID 1 no encontrado', Response::HTTP_NOT_FOUND);
+        }
 
+        $cancion->addEstilo($estilo);
+        
         $entityManager->persist($cancion);
-        $entityManager->flush(); 
+        $entityManager->flush();
 
-        return new Response('cancion creada');
-
+        return new Response('Canción creada correctamente');
     }
-
-
-
 }

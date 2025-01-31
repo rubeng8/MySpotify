@@ -21,18 +21,15 @@ class Estilo
     #[ORM\Column(length: 255)]
     private ?string $descripcion = null;
 
-    #[ORM\ManyToOne(inversedBy: 'estiloMusicalPreferido')]
-    private ?Perfil $perfil = null;
+    #[ORM\ManyToMany(targetEntity: Perfil::class, mappedBy: 'estiloMusicalPreferido')]
+    private Collection $perfiles;
 
-    /**
-     * @var Collection<int, Cancion>
-     */
-    #[ORM\ManyToMany(targetEntity: Cancion::class, inversedBy: 'generos')]
-    #[ORM\JoinTable(name: 'estilo_cancion')] // Nombre de la tabla intermedia
+    #[ORM\OneToMany(targetEntity: Cancion::class, mappedBy: 'genero', cascade: ['persist'])]
     private Collection $cancions;
 
     public function __construct()
     {
+        $this->perfiles = new ArrayCollection();
         $this->cancions = new ArrayCollection();
     }
 
@@ -65,21 +62,27 @@ class Estilo
         return $this;
     }
 
-    public function getPerfil(): ?Perfil
+    public function getPerfiles(): Collection
     {
-        return $this->perfil;
+        return $this->perfiles;
     }
 
-    public function setPerfil(?Perfil $perfil)
+    public function addPerfil(Perfil $perfil)
     {
-        $this->perfil = $perfil;
+        if (!$this->perfiles->contains($perfil)) {
+            $this->perfiles->add($perfil);
+        }
 
         return $this;
     }
 
-    /**
-     * @return Collection<int, Cancion>
-     */
+    public function removePerfil(Perfil $perfil)
+    {
+        $this->perfiles->removeElement($perfil);
+
+        return $this;
+    }
+
     public function getCancions(): Collection
     {
         return $this->cancions;
@@ -89,8 +92,6 @@ class Estilo
     {
         if (!$this->cancions->contains($cancion)) {
             $this->cancions->add($cancion);
-            // Para una relación ManyToMany, no es necesario modificar la propiedad de la otra parte aquí
-            $cancion->addEstilo($this);  // Agregar este estilo a la canción (si es necesario)
         }
 
         return $this;
@@ -98,11 +99,13 @@ class Estilo
 
     public function removeCancion(Cancion $cancion)
     {
-        if ($this->cancions->removeElement($cancion)) {
-            // Para una relación ManyToMany, no es necesario modificar la propiedad de la otra parte aquí
-            $cancion->removeEstilo($this);  // Eliminar este estilo de la canción (si es necesario)
-        }
+        $this->cancions->removeElement($cancion);
 
         return $this;
+    }
+
+    public function __toString():string
+    {
+        return $this->nombre;
     }
 }

@@ -34,21 +34,27 @@ class Cancion
     private ?int $likes = null;
 
     /**
-     * @var Collection<int, Estilo>
+     * @var Estilo
      */
-    #[ORM\ManyToMany(targetEntity: Estilo::class, mappedBy: 'cancions')]
-    private Collection $generos;
+    #[ORM\ManyToOne(targetEntity: Estilo::class, inversedBy: 'cancions', cascade:['persist'])]
+    private ?Estilo $genero = null; // Aquí se cambió de Collection a Estilo
 
     /**
      * @var Collection<int, PlaylistCancion>
      */
-    #[ORM\OneToMany(targetEntity: PlaylistCancion::class, mappedBy: 'cancion')]
+    #[ORM\OneToMany(targetEntity: PlaylistCancion::class, mappedBy: 'cancion', cascade:['persist'])]
     private Collection $playlistCancions;
+
+    /**
+     * @var Collection<int, Usuario>
+     */
+    #[ORM\ManyToMany(targetEntity: Usuario::class, inversedBy: 'canciones', cascade:['persist'])]
+    private Collection $usuarios;
 
     public function __construct()
     {
-        $this->generos = new ArrayCollection();
         $this->playlistCancions = new ArrayCollection();
+        $this->usuarios = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -128,29 +134,14 @@ class Cancion
         return $this;
     }
 
-    /**
-     * @return Collection<int, Estilo>
-     */
-    public function getGeneros(): Collection
+    public function getGenero(): ?Estilo
     {
-        return $this->generos;
+        return $this->genero;
     }
 
-    public function addEstilo(Estilo $estilo)
+    public function setGenero(?Estilo $genero): self
     {
-        if (!$this->generos->contains($estilo)) {
-            $this->generos->add($estilo);
-            $estilo->addCancion($this);  // Asegura la relación bidireccional
-        }
-
-        return $this;
-    }
-
-    public function removeEstilo(Estilo $estilo)
-    {
-        if ($this->generos->removeElement($estilo)) {
-            $estilo->removeCancion($this);  // Asegura la relación bidireccional
-        }
+        $this->genero = $genero;
 
         return $this;
     }
@@ -176,11 +167,35 @@ class Cancion
     public function removePlaylistCancion(PlaylistCancion $playlistCancion)
     {
         if ($this->playlistCancions->removeElement($playlistCancion)) {
-            // set the owning side to null (unless already changed)
+
             if ($playlistCancion->getCancion() === $this) {
                 $playlistCancion->setCancion(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Usuario>
+     */
+    public function getUsuario(): Collection
+    {
+        return $this->usuarios;
+    }
+
+    public function addUsuario(Usuario $usuario)
+    {
+        if (!$this->usuarios->contains($usuario)) {
+            $this->usuarios->add($usuario);
+        }
+
+        return $this;
+    }
+
+    public function removeUsuario(Usuario $usuario)
+    {
+        $this->usuarios->removeElement($usuario);
 
         return $this;
     }

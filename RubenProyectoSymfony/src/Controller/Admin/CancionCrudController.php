@@ -27,10 +27,8 @@ class CancionCrudController extends AbstractCrudController
             TextField::new('autor'),
             NumberField::new('reproducciones'),
             NumberField::new('likes'),
-            AssociationField::new('genero')
-                ->setRequired(true) // Asegura que el campo sea obligatorio (ya que 'nullable' es false)
-                ->autocomplete()
-            //TextEditorField::new('description'),
+            AssociationField::new('genero', 'Estilo')
+                ->setFormTypeOption('by_reference', false)
         ];
     }
 

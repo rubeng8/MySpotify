@@ -33,13 +33,13 @@ class Playlist
     /**
      * @var Collection<int, UsuarioPlaylist>
      */
-    #[ORM\OneToMany(targetEntity: UsuarioPlaylist::class, mappedBy: 'playlist')]
+    #[ORM\OneToMany(targetEntity: UsuarioPlaylist::class, mappedBy: 'playlist', cascade:['persist'])]
     private Collection $usuarioPlaylists;
 
     /**
      * @var Collection<int, PlaylistCancion>
      */
-    #[ORM\OneToMany(targetEntity: PlaylistCancion::class, mappedBy: 'playlist')]
+    #[ORM\OneToMany(targetEntity: PlaylistCancion::class, mappedBy: 'playlist', cascade:['persist'])]
     private Collection $playlistCancions;
 
     public function __construct()
@@ -58,7 +58,7 @@ class Playlist
         return $this->nombre;
     }
 
-    public function setNombre(string $nombre): static
+    public function setNombre(string $nombre)
     {
         $this->nombre = $nombre;
 
@@ -70,7 +70,7 @@ class Playlist
         return $this->visibilidad;
     }
 
-    public function setVisibilidad(string $visibilidad): static
+    public function setVisibilidad(string $visibilidad)
     {
         $this->visibilidad = $visibilidad;
 
@@ -82,7 +82,7 @@ class Playlist
         return $this->reproducciones;
     }
 
-    public function setReproducciones(int $reproducciones): static
+    public function setReproducciones(int $reproducciones)
     {
         $this->reproducciones = $reproducciones;
 
@@ -94,7 +94,7 @@ class Playlist
         return $this->likes;
     }
 
-    public function setLikes(int $likes): static
+    public function setLikes(int $likes)
     {
         $this->likes = $likes;
 
@@ -106,7 +106,7 @@ class Playlist
         return $this->propietario;
     }
 
-    public function setPropietario(?Usuario $propietario): static
+    public function setPropietario(?Usuario $propietario)
     {
         $this->propietario = $propietario;
 
@@ -121,7 +121,7 @@ class Playlist
         return $this->usuarioPlaylists;
     }
 
-    public function addUsuarioPlaylist(UsuarioPlaylist $usuarioPlaylist): static
+    public function addUsuarioPlaylist(UsuarioPlaylist $usuarioPlaylist)
     {
         if (!$this->usuarioPlaylists->contains($usuarioPlaylist)) {
             $this->usuarioPlaylists->add($usuarioPlaylist);
@@ -131,7 +131,7 @@ class Playlist
         return $this;
     }
 
-    public function removeUsuarioPlaylist(UsuarioPlaylist $usuarioPlaylist): static
+    public function removeUsuarioPlaylist(UsuarioPlaylist $usuarioPlaylist)
     {
         if ($this->usuarioPlaylists->removeElement($usuarioPlaylist)) {
             // set the owning side to null (unless already changed)
@@ -151,7 +151,7 @@ class Playlist
         return $this->playlistCancions;
     }
 
-    public function addPlaylistCancion(PlaylistCancion $playlistCancion): static
+    public function addPlaylistCancion(PlaylistCancion $playlistCancion)
     {
         if (!$this->playlistCancions->contains($playlistCancion)) {
             $this->playlistCancions->add($playlistCancion);
@@ -161,7 +161,7 @@ class Playlist
         return $this;
     }
 
-    public function removePlaylistCancion(PlaylistCancion $playlistCancion): static
+    public function removePlaylistCancion(PlaylistCancion $playlistCancion)
     {
         if ($this->playlistCancions->removeElement($playlistCancion)) {
             // set the owning side to null (unless already changed)

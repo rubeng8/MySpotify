@@ -16,10 +16,11 @@ class UsuarioPlaylist
     #[ORM\Column]
     private ?int $reproducida = null;
 
-    #[ORM\ManyToOne(inversedBy: 'usuarioPlaylists')]
+    #[ORM\ManyToOne(inversedBy: 'usuarioPlaylists', cascade:['persist'])]
+    #[ORM\JoinColumn(nullable:true)]
     private ?Usuario $usuario = null;
 
-    #[ORM\ManyToOne(inversedBy: 'usuarioPlaylists')]
+    #[ORM\ManyToOne(inversedBy: 'usuarioPlaylists', cascade:['persist'])]
     private ?Playlist $playlist = null;
 
     public function getId(): ?int
@@ -32,7 +33,7 @@ class UsuarioPlaylist
         return $this->reproducida;
     }
 
-    public function setReproducida(int $reproducida): static
+    public function setReproducida(int $reproducida)
     {
         $this->reproducida = $reproducida;
 
@@ -44,7 +45,7 @@ class UsuarioPlaylist
         return $this->usuario;
     }
 
-    public function setUsuario(?Usuario $usuario): static
+    public function setUsuario(?Usuario $usuario)
     {
         $this->usuario = $usuario;
 
@@ -56,7 +57,7 @@ class UsuarioPlaylist
         return $this->playlist;
     }
 
-    public function setPlaylist(?Playlist $playlist): static
+    public function setPlaylist(?Playlist $playlist)
     {
         $this->playlist = $playlist;
 

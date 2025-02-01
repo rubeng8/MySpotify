@@ -5,10 +5,10 @@ services:
     build: 
       context: .    # Ubicación del Dockerfile
       dockerfile: Dockerfile
-    container_name: symfony-spotify
+    container_name: symfony-linux
     volumes:
-    #- /c/Users/rubee/OneDrive/Escritorio/SymfonyProyectos/MySpotify:/var/www/symfony 
-    - /home/alumnotv/ProyectoSpotify/MySpotify:/var/www/symfony
+    - /c/Users/rubee/OneDrive/Escritorio/SymfonyProyectos/MySpotify:/var/www/symfony 
+    #- /home/alumnotv/ProyectoSpotify/MySpotify:/var/www/symfony
     working_dir: /var/www/symfony
     ports:
       - "8000:8000"
@@ -21,7 +21,7 @@ services:
       - mysql
   mysql:
     image: mysql:8.0    # Imagen oficial de MySQL
-    container_name: mysql_spotify
+    container_name: mysql_sym
     environment:
       MYSQL_ROOT_PASSWORD: 1234
       MYSQL_DATABASE: dbmyspotify

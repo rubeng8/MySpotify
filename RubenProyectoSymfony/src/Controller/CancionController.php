@@ -38,7 +38,7 @@ final class CancionController extends AbstractController
             return new Response('Estilo con ID 1 no encontrado', Response::HTTP_NOT_FOUND);
         }
 
-        $cancion->addEstilo($estilo);
+        $cancion->setGenero($estilo);
         
         $entityManager->persist($cancion);
         $entityManager->flush();

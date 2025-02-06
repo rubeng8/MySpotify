@@ -19,6 +19,11 @@ class PlaylistCancion
     #[ORM\ManyToOne(inversedBy: 'playlistCancions', cascade:['persist'])]
     private ?Cancion $cancion = null;
 
+    public function __toString():string
+    {
+        return $this->getCancion()->getTitulo();
+    }
+
     public function getId(): ?int
     {
         return $this->id;

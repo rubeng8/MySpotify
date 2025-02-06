@@ -29,13 +29,6 @@ class CancionCrudController extends AbstractCrudController
             NumberField::new('likes'),
             AssociationField::new('genero', 'Estilo')
                 ->setFormTypeOption('by_reference', false),
-            AssociationField::new('playlistCancions')
-                ->setFormTypeOptions([
-                    'by_reference' => false,
-                    'multiple' => true,
-                    'required' => false,
-                ])
-                ->hideOnIndex(),
         ];
     }
 

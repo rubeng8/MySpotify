@@ -57,6 +57,11 @@ class Cancion
         $this->usuarios = new ArrayCollection();
     }
 
+    public function __toString()
+    {
+        return $this->titulo;
+    }
+
     public function getId(): ?int
     {
         return $this->id;

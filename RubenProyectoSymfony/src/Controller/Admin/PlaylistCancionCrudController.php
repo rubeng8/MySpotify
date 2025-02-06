@@ -7,6 +7,8 @@ use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+
 
 class PlaylistCancionCrudController extends AbstractCrudController
 {
@@ -18,9 +20,11 @@ class PlaylistCancionCrudController extends AbstractCrudController
     public function configureFields(string $pageName): iterable
     {
         return [
-            IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
+            IdField::new('id')->hideOnForm(),
+            AssociationField::new('playlist', 'Playlist')->hideOnForm()
+                ->setFormTypeOption('by_reference', true),
+            AssociationField::new('cancion', 'Cancion')
+                ->setFormTypeOption('by_reference', true),
         ];
     }
 

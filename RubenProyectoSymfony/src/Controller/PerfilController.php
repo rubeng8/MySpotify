@@ -26,7 +26,7 @@ final class PerfilController extends AbstractController
     {
         $perfil=new Perfil();
         $perfil->setFoto("foto");
-        $perfil->setDescripcion("El mejor estilo");
+        $perfil->setDescripcion("Descripcion de prueba");
 
         $estilo = $entityManager->getRepository(Estilo::class)->find(1);
 

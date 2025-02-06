@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reproductor de Música</title>
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+</head>
+
+
+<body>
+
+    <header>
+        <img src="{{ asset('img/logo.png') }}" alt="Logo" id="logo">
+
+        <div id="input">
+
+            <input type="text" placeholder="¿Qué quieres reproducir?">
+            <button>Buscar</button>
+
+        </div>
+
+        <img src="{{ asset('img/login.png') }}" alt="Login" id="login">
+
+    </header>
+
+<source>
+    <div>
+
+
+        <nav>
+            <h3>Tu biblioteca</h3>
+
+            <div id="biblioteca">
+
+                <p><a href="">🎵 Canciones</a></p>
+                <p><a href="">🎶Playlist</a></p>
+
+            </div>
+
+        </nav>
+
+
+
+        <h3>Vivire</h3>
+        <h5>Camaron de la isla</h5>
+
+        <div id="centro">
+
+            <h2>Tus canciones</h2>
+
+            <div id="divCanciones">
+
+
+            </div>
+        </div>
+    </div>
+
+    <h1>Reproductor de Música</h1>
+    <input type="text" id="songName" placeholder="Nombre de la canción (example.mp3)" />
+    <button onclick="playSong()">Reproducir</button>
+    <audio id="audioPlayer" controls style="display: none; margin-top: 20px;">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+
+
+
+
+
+    <script src="{{ asset('assets/js/script.js') }}"></script>
+    <!-- se escribe asi, no hace falta usar public en documentos estaticos. Symfony lo gestiona automaticamente -->
+
+</body>
+
+</html>

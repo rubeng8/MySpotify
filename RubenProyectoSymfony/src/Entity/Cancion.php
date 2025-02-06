@@ -51,6 +51,9 @@ class Cancion
     #[ORM\ManyToMany(targetEntity: Usuario::class, inversedBy: 'canciones', cascade:['persist'])]
     private Collection $usuarios;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $portada = null;
+
     public function __construct()
     {
         $this->playlistCancions = new ArrayCollection();
@@ -201,6 +204,18 @@ class Cancion
     public function removeUsuario(Usuario $usuario)
     {
         $this->usuarios->removeElement($usuario);
+
+        return $this;
+    }
+
+    public function getPortada(): ?string
+    {
+        return $this->portada;
+    }
+
+    public function setPortada(?string $portada): static
+    {
+        $this->portada = $portada;
 
         return $this;
     }

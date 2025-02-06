@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1.0">
+ <title>Reproductor de Música</title>
+ <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+</head>
+
+{% block body %}
+
+<body>
+
+    <header>
+        <img src="{{ asset('img/logo1.png') }}" alt="Logo" id="logo">
+
+        <div id="input">
+
+            <input type="text" placeholder="¿Qué quieres reproducir?">
+            <button>Buscar</button>
+
+        </div>
+
+        <img src="{{ asset('img/login1.png') }}" alt="Login" id="login">
+
+    </header>
+    
+
+    <div id="container">
+
+
+        <nav>
+            <h3>|| Tu biblioteca</h3>
+
+            <div id="biblioteca">
+
+                <p><a href="">🎵 Canciones</a></p>
+                <p><a href="">🎶 Playlist</a></p>
+
+            </div>
+
+        </nav>
+
+        <div id="centro">
+
+            <h2>Tus canciones</h2>
+            <div class="contenedor-canciones">
+                {%for cancio in canciones %}
+                    <div class="cancion" onclick="playSong('{{cancion.titulo}}')">
+                        <img src="{{ cancion.portada }}" alt="portada">
+                        <h3>{{ cancion.titulo }}</h3>
+                        <h5>{{ cancion.autor }}</h5>
+                    </div>
+                {% else %}
+                    <p>No existen canciones</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    <audio id="audioPlayer" controls style="display: none;">
+        <source id="srcCancion">
+    </audio>
+    <footer>
+    
+    <p>© 2025 MySpotify - Todos los derechos reservados.</p>
+
+    </footer>
+
+
+
+    <script src="{{ asset('assets/js/script.js') }}"></script>
+    <!-- se escribe asi, no hace falta usar public en documentos estaticos. Symfony lo gestiona automaticamente -->
+
+</body>
+{% endblock %}
+</html>
+
+<!--
+<h1>Reproductor de Música</h1>
+    <input type="text" id="songName" placeholder="Nombre de la canción (example.mp3)" />
+    <button onclick="playSong()">Reproducir</button>
+    <audio id="audioPlayer" controls style="display: none; margin-top: 20px;">
+        Tu navegador no soporta el elemento de audio.
+    </audio>
+-->

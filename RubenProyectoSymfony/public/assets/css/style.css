@@ -1,0 +1,189 @@
+/* Estilo global */
+body {
+    background-color: #1a1a1a;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Header */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    padding: 15px 40px;
+    background-color: #1DB954;
+    color: white;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+/* Espacio para que el contenido no se oculte detrás del header */
+body {
+    padding-top: 80px;
+}
+#login{
+
+    padding-right: 50px;
+}
+
+/* Logo y Login */
+#logo, #login {
+    max-height: 50px;
+    transition: transform 0.3s ease-in-out;
+}
+
+#logo:hover, #login:hover {
+    transform: scale(1.1);
+}
+
+/* Input de búsqueda */
+#input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+#input input {
+    padding: 10px;
+    width: 250px;
+    border: none;
+    border-radius: 25px;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s ease-in-out;
+    text-align: center;
+}
+
+/* Sombra sutil en el input al hacer foco */
+#input input:focus {
+    box-shadow: 0 0 10px rgb(49, 49, 49);
+}
+
+/* Botón de búsqueda */
+#input button {
+    padding: 10px 15px;
+    border: none;
+    background-color: #121212;
+    color: white;
+    font-weight: bold;
+    border-radius: 25px;
+    cursor: pointer;
+    margin-left: 10px;
+    transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
+}
+
+/* Efecto hover en el botón */
+#input button:hover {
+    background-color: #1ed760;
+    transform: scale(1.05);
+}
+
+
+/* Contenedor principal que alinea nav y #centro */
+#container {
+    display: flex;
+    align-items: flex-start;  /* Alinea los elementos en la parte superior */
+    gap: 20px;  /* Espacio uniforme entre nav y #centro */
+    padding: 20px;
+}
+
+
+
+/* Estilos del centro */
+#centro {
+    flex-grow: 1; /* Hace que ocupe el resto del espacio disponible */
+    background-color: #1a1a1a;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+
+/* Links en nav */
+nav a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 10px 0;
+    transition: color 0.3s ease-in-out;
+}
+
+nav a:hover {
+    color: #1DB954; /* Verde Spotify */
+}
+
+#biblioteca{
+
+    background-color: rgb(49, 49, 49); /* Fondo oscuro para modernidad */
+    width: 220px;  /* Fija un ancho */
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+}
+nav{
+
+    padding-top: 30px;
+}
+
+.contenedor-canciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    row-gap: 30px; /* Espacio adicional entre las filas */
+    background-color: rgb(49, 49, 49);
+    width: 1100px;
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    justify-content: space-between;
+}
+
+
+.cancion {
+    flex: 1 1 calc(25% - 10px);
+    box-sizing: border-box;
+    min-width: calc(25% - 10px);
+    max-width: calc(25% - 10px);
+    text-align: center;
+    transition: transform 0.3s ease; /* Añade una transición suave */
+}
+
+.cancion:hover {
+    transform: scale(1.1); /* Aumenta el tamaño al 110% */
+    color: #1DB954;
+}
+
+.cancion img {
+    width: 60%;
+    height: auto;
+    border-radius: 8px;
+    margin: 0 auto;
+}
+.cancion h3,
+.cancion h5 {
+    margin: 0; /* Elimina los márgenes por defecto */
+    padding: 0; /* Asegura que no haya relleno extra */
+}
+
+.cancion h3 + h5 {
+    margin-top: 5px; /* Puedes ajustar este valor para el espacio deseado */
+}
+
+footer{
+    color: white;
+    text-align: center;
+    height: 20px;
+}
+
+footer p{
+
+    padding-bottom: 10px;
+}
+

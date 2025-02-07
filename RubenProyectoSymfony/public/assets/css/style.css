@@ -29,7 +29,6 @@ body {
     padding-top: 80px;
 }
 #login{
-
     padding-right: 50px;
 }
 
@@ -62,12 +61,10 @@ body {
     text-align: center;
 }
 
-/* Sombra sutil en el input al hacer foco */
 #input input:focus {
     box-shadow: 0 0 10px rgb(49, 49, 49);
 }
 
-/* Botón de búsqueda */
 #input button {
     padding: 10px 15px;
     border: none;
@@ -80,33 +77,26 @@ body {
     transition: background 0.3s ease-in-out, transform 0.2s ease-in-out;
 }
 
-/* Efecto hover en el botón */
 #input button:hover {
     background-color: #1ed760;
     transform: scale(1.05);
 }
 
-
-/* Contenedor principal que alinea nav y #centro */
 #container {
     display: flex;
-    align-items: flex-start;  /* Alinea los elementos en la parte superior */
-    gap: 20px;  /* Espacio uniforme entre nav y #centro */
+    align-items: flex-start;
+    gap: 20px;
     padding: 20px;
 }
 
-
-
-/* Estilos del centro */
 #centro {
-    flex-grow: 1; /* Hace que ocupe el resto del espacio disponible */
+    flex-grow: 1;
     background-color: #1a1a1a;
     color: white;
     padding: 20px;
     border-radius: 10px;
 }
 
-/* Links en nav */
 nav a {
     color: white;
     text-decoration: none;
@@ -116,19 +106,18 @@ nav a {
 }
 
 nav a:hover {
-    color: #1DB954; /* Verde Spotify */
+    color: #1DB954;
 }
 
 #biblioteca{
-
-    background-color: rgb(49, 49, 49); /* Fondo oscuro para modernidad */
-    width: 220px;  /* Fija un ancho */
+    background-color: rgb(49, 49, 49);
+    width: 220px;
     color: white;
     padding: 20px;
     border-radius: 10px;
 }
-nav{
 
+nav{
     padding-top: 30px;
 }
 
@@ -136,13 +125,13 @@ nav{
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    row-gap: 30px; /* Espacio adicional entre las filas */
+    row-gap: 30px;
     background-color: rgb(49, 49, 49);
     width: 1100px;
     color: white;
     padding: 20px;
     border-radius: 10px;
-    justify-content: space-between;
+    justify-content: flex-start; /* Cambiado de 'center' a 'flex-start' */
 }
 
 
@@ -152,11 +141,11 @@ nav{
     min-width: calc(25% - 10px);
     max-width: calc(25% - 10px);
     text-align: center;
-    transition: transform 0.3s ease; /* Añade una transición suave */
+    transition: transform 0.3s ease;
 }
 
 .cancion:hover {
-    transform: scale(1.1); /* Aumenta el tamaño al 110% */
+    transform: scale(1.1);
     color: #1DB954;
 }
 
@@ -166,14 +155,15 @@ nav{
     border-radius: 8px;
     margin: 0 auto;
 }
+
 .cancion h3,
 .cancion h5 {
-    margin: 0; /* Elimina los márgenes por defecto */
-    padding: 0; /* Asegura que no haya relleno extra */
+    margin: 0;
+    padding: 0;
 }
 
 .cancion h3 + h5 {
-    margin-top: 5px; /* Puedes ajustar este valor para el espacio deseado */
+    margin-top: 5px;
 }
 
 footer{
@@ -183,7 +173,16 @@ footer{
 }
 
 footer p{
-
     padding-bottom: 10px;
 }
 
+#audioPlayer {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 600px;
+    z-index: 9999;
+    min-width: 300px;
+}

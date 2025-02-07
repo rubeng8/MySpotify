@@ -53,26 +53,36 @@ final class CancionController extends AbstractController
     #[Route('/cancion/{titulo}', name: 'play_music', methods: ['GET'])]
     public function playMusic(string $titulo, EntityManagerInterface $entityManager): Response
     {
+        $cancionRepository = $entityManager->getRepository(Cancion::class);
+        $cancion = $cancionRepository->findOneBy(['titulo' => $titulo]);
 
-        $cancionRepository=$entityManager->getRepository(Cancion::class);
+        // Verificamos si la canción existe en la base de datos
+        if (!$cancion) {
+            return new Response('Canción no encontrada', 404);
+        }
 
-        $cancion=$cancionRepository->findOneBy(['titulo'=>$titulo]);
-        $nombreArchivo=$cancion->getArchivo();
+        $nombreArchivo = $cancion->getArchivo();
 
-        $musicDirectory = $this->getParameter('kernel.project_dir') . '/songs/';
-        $filePath = $musicDirectory . $nombreArchivo . ".mp3";
+        // Asumimos que la carpeta "songs" está dentro de "public"
+        $musicDirectory = $this->getParameter('kernel.project_dir') . '/public/songs/';
+        $filePath = $musicDirectory . $nombreArchivo;
+
+        // Verificamos si el archivo existe
         if (!file_exists($filePath)) {
             return new Response('Archivo no encontrado', 404);
         }
+
+        // Servimos el archivo directamente
         return new BinaryFileResponse($filePath);
     }
+
 
 
 
     #[Route('/cancion', name: 'app_cancion')]
     public function index(CancionRepository $repositoryCancion): Response
     {
-        $canciones=$repositoryCancion->findAll();
+        $canciones = $repositoryCancion->findAll();
 
         return $this->render('play/play.html.twig', [
             'canciones' => $canciones,

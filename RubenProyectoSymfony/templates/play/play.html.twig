@@ -45,9 +45,9 @@
 
             <h2>Tus canciones</h2>
             <div class="contenedor-canciones">
-                {%for cancio in canciones %}
+                {%for cancion in canciones %}
                     <div class="cancion" onclick="playSong('{{cancion.titulo}}')">
-                        <img src="{{ cancion.portada }}" alt="portada">
+                        <img src="{{ asset('img/' ~ cancion.portada) }}" alt="portada">
                         <h3>{{ cancion.titulo }}</h3>
                         <h5>{{ cancion.autor }}</h5>
                     </div>
@@ -59,7 +59,7 @@
     </div>
 
     <audio id="audioPlayer" controls style="display: none;">
-        <source id="srcCancion">
+        <source id="srcCancion" type="audio/mp3">
     </audio>
     <footer>
     
@@ -76,11 +76,3 @@
 {% endblock %}
 </html>
 
-<!--
-<h1>Reproductor de Música</h1>
-    <input type="text" id="songName" placeholder="Nombre de la canción (example.mp3)" />
-    <button onclick="playSong()">Reproducir</button>
-    <audio id="audioPlayer" controls style="display: none; margin-top: 20px;">
-        Tu navegador no soporta el elemento de audio.
-    </audio>
--->

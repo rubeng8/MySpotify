@@ -54,6 +54,9 @@ class Cancion
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $portada = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $archivo = null;
+
     public function __construct()
     {
         $this->playlistCancions = new ArrayCollection();
@@ -149,7 +152,9 @@ class Cancion
 
     public function setGenero(?Estilo $genero): self
     {
-        $this->genero = $genero;
+        if ($genero !== null) {
+            $this->genero = $genero;
+        }
 
         return $this;
     }
@@ -216,6 +221,18 @@ class Cancion
     public function setPortada(?string $portada): static
     {
         $this->portada = $portada;
+
+        return $this;
+    }
+
+    public function getArchivo(): ?string
+    {
+        return $this->archivo;
+    }
+
+    public function setArchivo(string $archivo): static
+    {
+        $this->archivo = $archivo;
 
         return $this;
     }

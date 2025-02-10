@@ -37,7 +37,7 @@ class Cancion
      * @var Estilo
      */
     #[ORM\ManyToOne(targetEntity: Estilo::class, inversedBy: 'cancions', cascade:['persist'])]
-    private ?Estilo $genero = null; // Aquí se cambió de Collection a Estilo
+    private ?Estilo $genero = null; 
 
     /**
      * @var Collection<int, PlaylistCancion>

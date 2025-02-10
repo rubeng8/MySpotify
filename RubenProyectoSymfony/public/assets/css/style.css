@@ -4,8 +4,8 @@ html, body {
     padding: 0;
     display: flex;
     flex-direction: column;
-    background-color: #1a1a1a;
-    color: white;
+    background-color: #7a7a7a;
+    color: black;
     font-family: 'Poppins', sans-serif;
 }
 
@@ -15,7 +15,7 @@ header {
     align-items: center;
     width: 100%;
     padding: 15px 40px;
-    background-color: #1DB954;
+    background-color: #077c30;
     color: white;
     position: fixed;
     top: 0;
@@ -91,14 +91,14 @@ body {
 
 #centro {
     flex-grow: 1;
-    background-color: #1a1a1a;
-    color: white;
+    background-color: rgb(190, 190, 190);
+    color: black;
     padding: 20px;
     border-radius: 10px;
 }
 
 nav a {
-    color: white;
+    color: black;
     text-decoration: none;
     display: block;
     padding: 10px 0;
@@ -106,13 +106,13 @@ nav a {
 }
 
 nav a:hover {
-    color: #1DB954;
+    color: #077c30;
 }
 
 #biblioteca {
-    background-color: rgb(49, 49, 49);
+    background-color: rgb(190, 190, 190);
     width: 220px;
-    color: white;
+    color: black;
     padding: 20px;
     border-radius: 10px;
 }
@@ -126,9 +126,9 @@ nav {
     flex-wrap: wrap;
     gap: 10px;
     row-gap: 30px;
-    background-color: rgb(49, 49, 49);
+    background-color: rgb(190, 190, 190);
     width: 1100px;
-    color: white;
+    color: black;
     padding: 20px;
     border-radius: 10px;
     justify-content: flex-start;
@@ -145,7 +145,7 @@ nav {
 
 .cancion:hover {
     transform: scale(1.1);
-    color: #1DB954;
+    color: #077c30;
 }
 
 .cancion img {
@@ -167,8 +167,8 @@ nav {
 
 footer {
     width: 100%;
-    background-color: #121212;
-    color: white;
+    background-color: #7a7a7a;
+    color: black;
     text-align: center;
     padding: 15px 0;
 }
@@ -193,7 +193,7 @@ footer {
 }
 
 #audioPlayer:hover {
-    background-color: #333;
+    background-color: #7a7a7a;
     transform: translateX(-50%) scale(1.05);
 }
 
@@ -207,3 +207,4 @@ footer {
 #audioPlayer audio {
     flex-grow: 1;
 }
+

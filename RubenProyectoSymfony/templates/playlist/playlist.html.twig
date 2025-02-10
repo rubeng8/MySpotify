@@ -33,6 +33,7 @@
             <h3>|| Tu biblioteca</h3>
 
             <div id="biblioteca">
+
                 <p><a href="{{ path('app_cancion') }}">🎵 Canciones</a></p>
                 <p><a href="{{ path('app_playlist') }}">🎶 Playlist</a></p>
 
@@ -42,24 +43,20 @@
 
         <div id="centro">
 
-            <h2>Tus canciones</h2>
+            <h2>Tus playlists</h2>
             <div class="contenedor-canciones">
-                {%for cancion in canciones %}
-                    <div class="cancion" onclick="playSong('{{cancion.titulo}}')">
-                        <img src="{{ asset('img/' ~ cancion.portada) }}" alt="portada">
-                        <h3>{{ cancion.titulo }}</h3>
-                        <h5>{{ cancion.autor }}</h5>
+                {%for playlist in playlists %}
+                    <div class="cancion">
+                        <img src="{{ asset('img/nota.png') }}" alt="portada">
+                        <h3>{{ playlist.nombre }}</h3>
                     </div>
                 {% else %}
-                    <p>No existen canciones</p>
+                    <p>No existen playlists</p>
                 {% endfor %}
             </div>
         </div>
     </div>
 
-    <audio id="audioPlayer" controls style="display: none;">
-        <source id="srcCancion" type="audio/mp3">
-    </audio>
     <footer>
     
     <p>© 2025 MySpotify - Todos los derechos reservados.</p>

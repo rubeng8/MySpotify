@@ -55,24 +55,19 @@ final class CancionController extends AbstractController
     {
         $cancionRepository = $entityManager->getRepository(Cancion::class);
         $cancion = $cancionRepository->findOneBy(['titulo' => $titulo]);
-
-        // Verificamos si la canción existe en la base de datos
         if (!$cancion) {
             return new Response('Canción no encontrada', 404);
         }
 
         $nombreArchivo = $cancion->getArchivo();
 
-        // Asumimos que la carpeta "songs" está dentro de "public"
         $musicDirectory = $this->getParameter('kernel.project_dir') . '/public/songs/';
         $filePath = $musicDirectory . $nombreArchivo;
 
-        // Verificamos si el archivo existe
         if (!file_exists($filePath)) {
             return new Response('Archivo no encontrado', 404);
         }
 
-        // Servimos el archivo directamente
         return new BinaryFileResponse($filePath);
     }
 

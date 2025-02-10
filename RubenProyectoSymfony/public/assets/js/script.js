@@ -23,14 +23,13 @@ function buscarCancion() {
         let titulo = canciones[i].querySelector("h3").textContent.toLowerCase();
 
         if (titulo.includes(input)) {
-            canciones[i].style.display = "block"; // Mostrar si coincide
+            canciones[i].style.display = "block";
             encontrado = true;
         } else {
-            canciones[i].style.display = "none"; // Ocultar si no coincide
+            canciones[i].style.display = "none";
         }
     }
 
-    // Manejar mensaje de "No se encontraron canciones"
     let sinResultados = document.getElementById("sinResultados");
 
     if (!encontrado) {

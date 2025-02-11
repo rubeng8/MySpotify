@@ -48,3 +48,9 @@ function buscarCancion() {
     }
 }
 
+function mostrarCancionesPlaylist(playlistId){
+
+    window.location.href = `/playlist/${playlistId}`;
+
+
+}

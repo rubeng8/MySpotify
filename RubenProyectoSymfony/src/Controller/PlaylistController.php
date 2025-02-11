@@ -10,6 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\PlaylistRepository;
+use App\Repository\PlaylistCancionRepository;
 
 final class PlaylistController extends AbstractController
 {
@@ -37,7 +38,7 @@ final class PlaylistController extends AbstractController
         if ($usuario === null) {
             return new Response('Usuario con ID 1 no encontrado', Response::HTTP_NOT_FOUND);
         }
-        $usuario->addPlaylist($playlist); 
+        $usuario->addPlaylist($playlist);
 
         $entityManager->persist($playlist);
         $entityManager->flush();
@@ -54,4 +55,18 @@ final class PlaylistController extends AbstractController
             'playlists' => $playlists,
         ]);
     }
+
+
+    #[Route('/playlist/{playlistId}', name: 'app_playlist_canciones')]
+    public function obtenerCancionesDePlaylist(int $playlistId, PlaylistCancionRepository $playlistCancionRepository): Response
+    {
+
+        $playlistCanciones = $playlistCancionRepository->findBy(['playlist' => $playlistId]);
+
+        return $this->render('playlistCancion/playlistCancion.html.twig', [
+            'playlistCanciones' => $playlistCanciones
+        ]);
+    }
+    
+
 }

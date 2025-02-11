@@ -27,6 +27,7 @@ header {
 
 body {
     padding-top: 80px;
+    display: flex;
 }
 
 #login {
@@ -87,6 +88,7 @@ body {
     align-items: flex-start;
     gap: 20px;
     padding: 20px;
+    margin-left: 240px;
 }
 
 #centro {
@@ -95,6 +97,17 @@ body {
     color: black;
     padding: 20px;
     border-radius: 10px;
+}
+
+nav {
+    position: fixed;
+    left: 0;
+    top: 80px;
+    width: 220px;
+    height: calc(100vh - 80px);
+    background-color: rgb(190, 190, 190);
+    overflow-y: auto;
+    padding-top: 20px;
 }
 
 nav a {
@@ -117,17 +130,13 @@ nav a:hover {
     border-radius: 10px;
 }
 
-nav {
-    padding-top: 30px;
-}
-
 .contenedor-canciones {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     row-gap: 30px;
     background-color: rgb(190, 190, 190);
-    width: 1500px;
+    width: 1100px;
     color: black;
     padding: 20px;
     border-radius: 10px;
@@ -181,7 +190,7 @@ footer {
     width: 90%;
     max-width: 600px;
     min-width: 300px;
-    background-color: #222;
+    background-color: #7a7a7a;
     border-radius: 15px;
     padding: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
@@ -192,7 +201,7 @@ footer {
 }
 
 #audioPlayer:hover {
-    background-color: #7a7a7a;
+    background-color: rgb(190, 190, 190);
     transform: translateX(-50%) scale(1.05);
 }
 
@@ -206,4 +215,3 @@ footer {
 #audioPlayer audio {
     flex-grow: 1;
 }
-

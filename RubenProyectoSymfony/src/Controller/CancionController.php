@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Cancion;
 use App\Entity\Estilo;
 use App\Repository\CancionRepository;
+use App\Repository\PlaylistRepository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -71,6 +72,18 @@ final class CancionController extends AbstractController
         return new BinaryFileResponse($filePath);
     }
 
+
+    #[Route('', name: 'app_inicio')]
+    public function inicio(CancionRepository $repositoryCancion, PlaylistRepository $playlistRepository): Response
+    {
+        $playlists=$playlistRepository->findAll();
+        $canciones = $repositoryCancion->findAll();
+
+        return $this->render('inicio/inicio.html.twig', [
+            'canciones' => $canciones,
+            'playlists' => $playlists
+        ]);
+    }
 
 
 

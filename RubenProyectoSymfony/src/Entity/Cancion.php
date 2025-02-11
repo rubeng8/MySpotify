@@ -218,7 +218,7 @@ class Cancion
         return $this->portada;
     }
 
-    public function setPortada(?string $portada): static
+    public function setPortada(?string $portada)
     {
         $this->portada = $portada;
 
@@ -230,7 +230,7 @@ class Cancion
         return $this->archivo;
     }
 
-    public function setArchivo(string $archivo): static
+    public function setArchivo(string $archivo)
     {
         $this->archivo = $archivo;
 

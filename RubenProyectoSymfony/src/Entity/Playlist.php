@@ -18,8 +18,8 @@ class Playlist
     #[ORM\Column(length: 255)]
     private ?string $nombre = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $visibilidad = null;
+    #[ORM\Column(type: 'boolean')]
+    private ?bool $visibilidad = null;
 
     #[ORM\Column]
     private ?int $reproducciones = null;
@@ -33,13 +33,13 @@ class Playlist
     /**
      * @var Collection<int, UsuarioPlaylist>
      */
-    #[ORM\OneToMany(targetEntity: UsuarioPlaylist::class, mappedBy: 'playlist', cascade:['persist'])]
+    #[ORM\OneToMany(targetEntity: UsuarioPlaylist::class, mappedBy: 'playlist', cascade: ['persist'])]
     private Collection $usuarioPlaylists;
 
     /**
      * @var Collection<int, PlaylistCancion>
      */
-    #[ORM\OneToMany(targetEntity: PlaylistCancion::class, mappedBy: 'playlist', cascade:['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: PlaylistCancion::class, mappedBy: 'playlist', cascade: ['persist', 'remove'])]
     private Collection $playlistCancions;
 
     public function __construct()

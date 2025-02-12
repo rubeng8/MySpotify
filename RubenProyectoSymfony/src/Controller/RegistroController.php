@@ -35,7 +35,7 @@ class RegistroController extends AbstractController
             $entityManager->flush();
             return $this->redirectToRoute('app_music');
         }
-        return $this->render('registation/register.html.twig', [
+        return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }

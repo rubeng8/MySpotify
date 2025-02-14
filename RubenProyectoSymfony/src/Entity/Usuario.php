@@ -7,23 +7,38 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity(repositoryClass: UsuarioRepository::class)]
-class Usuario
+#[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
+#[UniqueEntity(fields: ['email'], message: 'Este email ya está en uso.')]
+class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 180)]
     private ?string $email = null;
 
     #[ORM\Column(length: 255)]
+    private ?string $nombre = null;
+
+    /**
+     * @var list<string> The user roles
+     */
+    #[ORM\Column]
+    private array $roles = [];
+
+    /**
+     * @var string The hashed password
+     */
+    #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $nombre = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $fechaNacimiento = null;
@@ -46,16 +61,17 @@ class Usuario
     /**
      * @var Collection<int, Cancion>
      */
-    #[ORM\ManyToMany(targetEntity: Cancion::class, mappedBy: 'usuario')]
-    private Collection $canciones;
+    #[ORM\ManyToMany(targetEntity: Cancion::class, inversedBy: 'usuarios')]
+    private Collection $cancion;
 
     public function __construct()
     {
         $this->playlists = new ArrayCollection();
         $this->usuarioPlaylists = new ArrayCollection();
-        $this->canciones = new ArrayCollection();
+        $this->cancion = new ArrayCollection();
     }
-    public function __toString()
+
+    public function __toString(): string
     {
         return $this->nombre;
     }
@@ -65,16 +81,71 @@ class Usuario
         return $this->id;
     }
 
+    public function getNombre(): ?string
+    {
+        return $this->nombre;
+    }
+
+    public function setNombre(string $nombre): static
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    public function setEmail(string $email)
+    public function setEmail(string $email): static
     {
         $this->email = $email;
 
         return $this;
+    }
+
+     /**
+     * A visual identifier that represents this user.
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+     /**
+     * @see UserInterface
+     *
+     * @return list<string>
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = 'ROLE_USER';
+
+        return array_unique($roles);
+    }
+
+     /**
+     * @param list<string> $roles
+     */
+    public function setRoles(array $roles): static
+    {
+        $this->roles = $roles;
+
+        return $this;
+    }
+
+     /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
     }
 
     public function getPassword(): ?string
@@ -82,21 +153,9 @@ class Usuario
         return $this->password;
     }
 
-    public function setPassword(string $password)
+    public function setPassword(string $password): static
     {
         $this->password = $password;
-
-        return $this;
-    }
-
-    public function getNombre(): ?string
-    {
-        return $this->nombre;
-    }
-
-    public function setNombre(string $nombre)
-    {
-        $this->nombre = $nombre;
 
         return $this;
     }
@@ -106,7 +165,7 @@ class Usuario
         return $this->fechaNacimiento;
     }
 
-    public function setFechaNacimiento(\DateTimeInterface $fechaNacimiento)
+    public function setFechaNacimiento(\DateTimeInterface $fechaNacimiento): static
     {
         $this->fechaNacimiento = $fechaNacimiento;
 
@@ -118,7 +177,7 @@ class Usuario
         return $this->perfil;
     }
 
-    public function setPerfil(Perfil $perfil)
+    public function setPerfil(?Perfil $perfil): static
     {
         $this->perfil = $perfil;
 
@@ -133,7 +192,7 @@ class Usuario
         return $this->playlists;
     }
 
-    public function addPlaylist(Playlist $playlist)
+    public function addPlaylist(Playlist $playlist): static
     {
         if (!$this->playlists->contains($playlist)) {
             $this->playlists->add($playlist);
@@ -143,9 +202,10 @@ class Usuario
         return $this;
     }
 
-    public function removePlaylist(Playlist $playlist)
+    public function removePlaylist(Playlist $playlist): static
     {
         if ($this->playlists->removeElement($playlist)) {
+            // set the owning side to null (unless already changed)
             if ($playlist->getPropietario() === $this) {
                 $playlist->setPropietario(null);
             }
@@ -162,7 +222,7 @@ class Usuario
         return $this->usuarioPlaylists;
     }
 
-    public function addUsuarioPlaylist(UsuarioPlaylist $usuarioPlaylist)
+    public function addUsuarioPlaylist(UsuarioPlaylist $usuarioPlaylist): static
     {
         if (!$this->usuarioPlaylists->contains($usuarioPlaylist)) {
             $this->usuarioPlaylists->add($usuarioPlaylist);
@@ -172,9 +232,10 @@ class Usuario
         return $this;
     }
 
-    public function removeUsuarioPlaylist(UsuarioPlaylist $usuarioPlaylist)
+    public function removeUsuarioPlaylist(UsuarioPlaylist $usuarioPlaylist): static
     {
         if ($this->usuarioPlaylists->removeElement($usuarioPlaylist)) {
+            // set the owning side to null (unless already changed)
             if ($usuarioPlaylist->getUsuario() === $this) {
                 $usuarioPlaylist->setUsuario(null);
             }
@@ -186,26 +247,23 @@ class Usuario
     /**
      * @return Collection<int, Cancion>
      */
-    public function getCanciones(): Collection
+    public function getCancion(): Collection
     {
-        return $this->canciones;
+        return $this->cancion;
     }
 
-    public function addCancione(Cancion $cancione)
+    public function addCancion(Cancion $cancion): static
     {
-        if (!$this->canciones->contains($cancione)) {
-            $this->canciones->add($cancione);
-            $cancione->addUsuario($this);
+        if (!$this->cancion->contains($cancion)) {
+            $this->cancion->add($cancion);
         }
 
         return $this;
     }
 
-    public function removeCancione(Cancion $cancione)
+    public function removeCancion(Cancion $cancion): static
     {
-        if ($this->canciones->removeElement($cancione)) {
-            $cancione->removeUsuario($this);
-        }
+        $this->cancion->removeElement($cancion);
 
         return $this;
     }

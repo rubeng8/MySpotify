@@ -19,7 +19,7 @@ class Playlist
     private ?string $nombre = null;
 
     #[ORM\Column(type: 'boolean')]
-    private ?bool $visibilidad = null;
+    private bool $visibilidad;
 
     #[ORM\Column]
     private ?int $reproducciones = null;

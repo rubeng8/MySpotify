@@ -86,7 +86,7 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->nombre;
     }
 
-    public function setNombre(string $nombre): static
+    public function setNombre(string $nombre)
     {
         $this->nombre = $nombre;
 
@@ -98,7 +98,7 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(string $email)
     {
         $this->email = $email;
 
@@ -123,8 +123,7 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+
 
         return array_unique($roles);
     }
@@ -132,7 +131,7 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
      /**
      * @param list<string> $roles
      */
-    public function setRoles(array $roles): static
+    public function setRoles(array $roles)
     {
         $this->roles = $roles;
 
@@ -153,7 +152,7 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(string $password)
     {
         $this->password = $password;
 
@@ -165,7 +164,7 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->fechaNacimiento;
     }
 
-    public function setFechaNacimiento(\DateTimeInterface $fechaNacimiento): static
+    public function setFechaNacimiento(\DateTimeInterface $fechaNacimiento)
     {
         $this->fechaNacimiento = $fechaNacimiento;
 
@@ -177,7 +176,7 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->perfil;
     }
 
-    public function setPerfil(?Perfil $perfil): static
+    public function setPerfil(?Perfil $perfil)
     {
         $this->perfil = $perfil;
 
@@ -192,7 +191,7 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->playlists;
     }
 
-    public function addPlaylist(Playlist $playlist): static
+    public function addPlaylist(Playlist $playlist)
     {
         if (!$this->playlists->contains($playlist)) {
             $this->playlists->add($playlist);
@@ -202,7 +201,7 @@ class Usuario implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removePlaylist(Playlist $playlist): static
+    public function removePlaylist(Playlist $playlist)
     {
         if ($this->playlists->removeElement($playlist)) {
             // set the owning side to null (unless already changed)

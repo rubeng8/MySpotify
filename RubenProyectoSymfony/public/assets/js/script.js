@@ -54,3 +54,9 @@ function mostrarCancionesPlaylist(playlistId){
 
 
 }
+
+function redirigirLogin(){
+
+    window.location.href = "{{ path('app_login') }}";
+
+}

@@ -25,7 +25,7 @@ final class CancionController extends AbstractController
         ]);
     }**/
 
-    #[Route('/Cancion/new', name: 'app_crearCancion')]
+    #[Route('/cancion/new', name: 'app_crearCancion')]
     public function crearCancion(EntityManagerInterface $entityManager): Response
     {
         $cancion = new Cancion();

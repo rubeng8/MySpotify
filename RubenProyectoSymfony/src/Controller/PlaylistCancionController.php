@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 final class PlaylistCancionController extends AbstractController
 {
-    #[Route('/playlist/cancion', name: 'app_playlist_cancion')]
+    #[Route('/user/playlist/cancion', name: 'app_playlist_cancion')]
     public function index(): Response
     {
         return $this->render('playlist_cancion/index.html.twig', [
@@ -23,7 +23,7 @@ final class PlaylistCancionController extends AbstractController
 
 
 
-    #[Route('/PlaylistCancion/new', name: 'app_crearPlaylistCancion')]
+    #[Route('/user/PlaylistCancion/new', name: 'app_crearPlaylistCancion')]
     public function crearPlaylistCancion(EntityManagerInterface $entityManager): Response
     {
         $playlistCancion=new PlaylistCancion();

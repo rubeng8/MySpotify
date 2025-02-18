@@ -30,12 +30,14 @@ security:
             logout:
                 path: app_logout
 
+            access_denied_url: /acceso
+
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
-        - { path: ^/user, roles: ROLE_USUARIO }
         - { path: ^/manager, roles: ROLE_MANAGER }
+        - { path: ^/user, roles: ROLE_USER }
 
 when@test:
     security:

@@ -28,6 +28,6 @@ final class LoginController extends AbstractController
     #[Route('/logout', name: 'app_logout')]
     public function logout(): void
     {
-        // Este método nunca será ejecutado, ya que Symfony maneja el logout automáticamente
+
     }
 }

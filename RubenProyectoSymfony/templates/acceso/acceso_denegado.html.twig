@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Acceso Denegado{% endblock %}
+
+{% block body %}
+    <div class="text-center mt-5">
+        <h1 class="text-danger">🚫 Acceso Denegado</h1>
+        <p>{{ mensaje }}</p>
+        <a href="{{ path('app_inicio') }}" class="btn btn-primary mt-3">Volver al inicio</a>
+    </div>
+{% endblock %}

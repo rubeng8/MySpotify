@@ -67,6 +67,41 @@ final class PlaylistController extends AbstractController
             'playlistCanciones' => $playlistCanciones
         ]);
     }
+
+    
+    #[Route('/playlist/obtener', name: 'playlist_obtener', methods: ['GET'])]
+    public function playlistObtener(EntityManagerInterface $entityManager): JsonResponse
+    {
+        $playlistRepository = $entityManager->getRepository(Playlist::class);
+        $playlists = $playlistRepository->findAll();
+
+        $playlistsDisponibles = [];
+
+        foreach ($playlists as $playlist) {
+            $playlistCanciones = $playlist->getPlaylistCancions();
+            $canciones = [];
+
+            foreach ($playlistCanciones as $playlistCancion) {
+                $cancion = $playlistCancion->getCancion();
+                $canciones[] = [
+                    'titulo' => $cancion->getTitulo(),
+                    'autor' => $cancion->getAutor(),
+                    'portada' => $cancion->getPortada(),
+                    'ruta' => $this->getParameter('kernel.project_dir') . '/public/songs/' . $cancion->getArchivo()
+                ];
+            }
+
+            $playlistsDisponibles[] = [
+                'nombre' => $playlist->getNombre(),
+                'portada' => $playlist->getPortada(),
+                'likes' => $playlist->getLikes(),
+                'reproducciones' => $playlist->getReproducciones(),
+                'canciones' => $canciones
+            ];
+        }
+
+        return new JsonResponse($playlistsDisponibles);
+    }
     
 
 }

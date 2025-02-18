@@ -31,8 +31,8 @@ class RegistrationFormType extends AbstractType
                 'Admin' => 'ROLE_ADMIN',
                 'User' => 'ROLE_USUARIO',
                 ],
-                'multiple' => true, // Permitir múltiples opciones
-                'expanded' => true, ]) // Renderiza como checkboxes
+                'multiple' => true, 
+                'expanded' => true, ])
 
             ->add('fechaNacimiento', null, [
                 'widget' => 'single_text',

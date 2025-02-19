@@ -1,43 +1,189 @@
 {% extends 'base.html.twig' %}
+
 {% block title %}Estadísticas{% endblock %}
+
 {% block body %}
-<div class="container">
-<h2>Estadísticas de Reproducciones por Playlist</h2>
-<canvas id="reproduccionesChart"></canvas>
-</div>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script><!-- se ejecuta cuando la página ha terminado de cargarse
-document.addEventListener("DOMContentLoaded", function () {
-<!--hace una solicitud HTTP GET a la URL que devuelve la ruta generada por Symfony
-(path('estadisticas_datos')).-->
-fetch("{{ path('estadisticas_datos') }}")
-.then(response => response.json())
-.then(data => {
-const labels = data.map(item => item.playlist);
-const values = data.map(item => item.totalReproducciones);
-const ctx = document.getElementById('reproduccionesChart').getContext('2d');
-new Chart(ctx, {
-type: 'bar',
-data: {
-labels: labels,
-datasets: [{
-label: 'Total Reproducciones',
-data: values,
-backgroundColor: 'rgba(54, 162, 235, 0.5)',
-borderColor: 'rgba(54, 162, 235, 1)',
-borderWidth: 1
-}]
-},
-options: {
-responsive: true,
-scales: {
-y: {
-beginAtZero: true
-}
-}
-}
-});
-});
-});
-</script>
+    <div class="container">
+        <h2>Estadísticas de Reproducción</h2>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Reproducciones por Playlist</h3>
+                <canvas id="reproduccionesChart"></canvas>
+            </div>
+            <div class="col-md-6">
+                <h3>Likes por Playlist</h3>
+                <canvas id="likesChart"></canvas>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <h3>Canciones más Reproducidas</h3>
+                <canvas id="cancionesChart"></canvas>
+            </div>
+            <div class="col-md-6">
+                <h3>Distribución de Reproducción de Estilos</h3>
+                <canvas id="estilosChart"></canvas>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12">
+                <h3>Usuarios por Rango de Edad</h3>
+                <canvas id="rangosEdadChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+    
+            const reproduccionesData = {{ reproducciones|json_encode|raw }};
+            const reproduccionesLabels = reproduccionesData.map(item => item.playlist);
+            const reproduccionesValues = reproduccionesData.map(item => item.totalReproducciones);
+
+            const ctxReproducciones = document.getElementById('reproduccionesChart').getContext('2d');
+            new Chart(ctxReproducciones, {
+                type: 'bar',
+                data: {
+                    labels: reproduccionesLabels,
+                    datasets: [{
+                        label: 'Reproducciones',
+                        data: reproduccionesValues,
+                        backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                        borderColor: 'rgba(54, 162, 235, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+
+            
+            const likesData = {{ likes|json_encode|raw }};
+            const likesLabels = likesData.map(item => item.playlist);
+            const likesValues = likesData.map(item => item.totalLikes);
+
+            const ctxLikes = document.getElementById('likesChart').getContext('2d');
+            new Chart(ctxLikes, {
+                type: 'bar',
+                data: {
+                    labels: likesLabels,
+                    datasets: [{
+                        label: 'Likes',
+                        data: likesValues,
+                        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+                        borderColor: 'rgba(255, 99, 132, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+
+    
+            const cancionesData = {{ canciones|json_encode|raw }};
+            const cancionesLabels = cancionesData.map(item => item.cancion);
+            const cancionesValues = cancionesData.map(item => item.totalReproducciones);
+
+            const ctxCanciones = document.getElementById('cancionesChart').getContext('2d');
+            new Chart(ctxCanciones, {
+                type: 'bar',
+                data: {
+                    labels: cancionesLabels,
+                    datasets: [{
+                        label: 'Reproducciones de Canciones',
+                        data: cancionesValues,
+                        backgroundColor: 'rgba(75, 192, 192, 0.5)',
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+
+            const estilosData = {{ estilos|json_encode|raw }};
+            const estilosLabels = estilosData.map(item => item.estilo);
+            const estilosValues = estilosData.map(item => item.totalReproducciones);
+
+            const ctxEstilos = document.getElementById('estilosChart').getContext('2d');
+            new Chart(ctxEstilos, {
+                type: 'pie',  
+                data: {
+                    labels: estilosLabels,
+                    datasets: [{
+                        label: 'Reproducciones por Estilo',
+                        data: estilosValues,
+                        backgroundColor: [
+                            'rgba(255, 99, 132, 0.5)',
+                            'rgba(54, 162, 235, 0.5)',
+                            'rgba(255, 206, 86, 0.5)',
+                            'rgba(75, 192, 192, 0.5)',
+                            'rgba(153, 102, 255, 0.5)'
+                        ],
+                        borderColor: [
+                            'rgba(255, 99, 132, 1)',
+                            'rgba(54, 162, 235, 1)',
+                            'rgba(255, 206, 86, 1)',
+                            'rgba(75, 192, 192, 1)',
+                            'rgba(153, 102, 255, 1)'
+                        ],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true
+                }
+            });
+
+            const rangosEdadData = {{ rangosEdad|json_encode|raw }};
+            const rangosEdadLabels = ['15-20', '20-25', '25-30', '30-35', '35-40'];
+            const rangosEdadValues = [
+                rangosEdadData.rango_15_20,
+                rangosEdadData.rango_20_25,
+                rangosEdadData.rango_25_30,
+                rangosEdadData.rango_30_35,
+                rangosEdadData.rango_35_40
+            ];
+
+            const ctxRangosEdad = document.getElementById('rangosEdadChart').getContext('2d');
+            new Chart(ctxRangosEdad, {
+                type: 'bar', 
+                data: {
+                    labels: rangosEdadLabels,
+                    datasets: [{
+                        label: 'Usuarios por Rango de Edad',
+                        data: rangosEdadValues,
+                        backgroundColor: 'rgba(153, 102, 255, 0.5)',
+                        borderColor: 'rgba(153, 102, 255, 1)',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: { beginAtZero: true }
+                    }
+                }
+            });
+        });
+    </script>
+
 {% endblock %}

@@ -72,4 +72,47 @@ class UsuarioRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+
+    public function obtenerUsuariosPorRangoDeEdad(): array
+{
+
+    $fechasNacimiento = $this->createQueryBuilder('u')
+        ->select('u.fechaNacimiento')
+        ->getQuery()
+        ->getResult();
+
+    $rangosEdad = [
+        'rango_15_20' => 0,
+        'rango_20_25' => 0,
+        'rango_25_30' => 0,
+        'rango_30_35' => 0,
+        'rango_35_40' => 0,
+    ];
+
+    foreach ($fechasNacimiento as $fechaNacimiento) {
+        $edad = $this->calcularEdad($fechaNacimiento['fechaNacimiento']);
+
+        if ($edad >= 15 && $edad < 20) {
+            $rangosEdad['rango_15_20']++;
+        } elseif ($edad >= 20 && $edad < 25) {
+            $rangosEdad['rango_20_25']++;
+        } elseif ($edad >= 25 && $edad < 30) {
+            $rangosEdad['rango_25_30']++;
+        } elseif ($edad >= 30 && $edad < 35) {
+            $rangosEdad['rango_30_35']++;
+        } elseif ($edad >= 35 && $edad <= 40) {
+            $rangosEdad['rango_35_40']++;
+        }
+    }
+
+    return $rangosEdad;
+}
+
+private function calcularEdad(\DateTimeInterface $fechaNacimiento): int
+{
+    $hoy = new \DateTime();
+    $diferencia = $hoy->diff($fechaNacimiento);
+    return $diferencia->y; 
+}
 }

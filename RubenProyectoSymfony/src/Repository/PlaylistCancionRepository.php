@@ -12,14 +12,29 @@ class PlaylistCancionRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, PlaylistCancion::class);
     }
-    public function obtenerReproduccionesPorPlaylist(): array
+
+    public function obtenerCancionesMasReproducidas(): array
     {
         return $this->createQueryBuilder('pc')
-            ->select('p.nombre AS playlist, SUM(pc.reproducciones) AS
-totalReproducciones')
-            ->join('pc.playlist', 'p')
-            ->groupBy('p.id')
+            ->select('c.titulo AS cancion, SUM(c.reproducciones) AS totalReproducciones') 
+            ->join('pc.cancion', 'c') 
+            ->groupBy('c.id') 
             ->getQuery()
             ->getResult();
     }
+    
+
+    public function obtenerReproduccionesPorEstilo(): array
+    {
+        return $this->createQueryBuilder('pc')
+            ->select('e.nombre AS estilo, SUM(c.reproducciones) AS totalReproducciones') 
+            ->join('pc.cancion', 'c')  
+            ->join('c.genero', 'e')
+            ->groupBy('e.id')  
+            ->getQuery()
+            ->getResult();
+    }
+    
+
+
 }

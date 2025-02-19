@@ -38,6 +38,7 @@ security:
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/manager, roles: ROLE_MANAGER }
         - { path: ^/user, roles: ROLE_USER }
+        - { path: ^/estadisticas, roles: ROLE_MANAGER }
 
 when@test:
     security:

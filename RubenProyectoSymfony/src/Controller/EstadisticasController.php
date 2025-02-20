@@ -31,10 +31,22 @@ class EstadisticasController extends AbstractController
         ]);
     }
 
-   /* #[Route('/estadisticas/datos', name: 'estadisticas_datos')]
-    public function obtenerDatos(PlaylistRepository $playlistRepository): JsonResponse
+    #[Route('/estadisticas/datos', name: 'estadisticas_datos')]
+    public function obtenerDatos(PlaylistRepository $playlistRepository, PlaylistCancionRepository $playlistCancionRepository, UsuarioRepository $usuarioRepository): JsonResponse
     {
-        $datos = $playlistRepository->obtenerReproduccionesPorPlaylist(10);
-        return $this->json($datos);
-    }*/
+
+        $reproducciones = $playlistRepository->obtenerReproduccionesPorPlaylist();
+        $likes = $playlistRepository->obtenerLikesPorPlaylist();
+        $canciones = $playlistCancionRepository->obtenerCancionesMasReproducidas();
+        $estilos = $playlistCancionRepository->obtenerReproduccionesPorEstilo();
+        $rangosEdad = $usuarioRepository->obtenerUsuariosPorRangoDeEdad();
+
+        return new JsonResponse([
+            'reproducciones' => $reproducciones,
+            'likes' => $likes,
+            'canciones' => $canciones,
+            'estilos' => $estilos,
+            'rangosEdad' => $rangosEdad,
+        ]);
+    }
 }

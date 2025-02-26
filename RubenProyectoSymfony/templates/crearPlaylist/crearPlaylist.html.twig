@@ -3,90 +3,81 @@
 <head>
  <meta charset="UTF-8">
  <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Reproductor de Música</title>
+ <title>Crear Playlist</title>
  <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 </head>
 
 {% block body %}
-
 <body>
 
     <header>
         <a href="{{ path('app_inicio') }}">
-
             <img src="{{ asset('img/logo1.png') }}" alt="Logo" id="logo">
-
         </a>
 
         <div id="input">
-
-            <input type="text" placeholder="¿Qué quieres reproducir?" id="inputBuscar">
+            <input type="text" placeholder="¿Cuál quieres añadir?" id="inputBuscar">
             <button id="idBuscar" onclick="buscarCancion()">Buscar</button>
-
         </div>
 
         <a href="{{ path('app_login') }}">
             <img src="{{ asset('img/login1.png') }}" alt="Login" id="login">
         </a>
-
     </header>
-    
+
     <div id="container">
+
         <nav>
             <h3>|| Tu biblioteca</h3>
-
             <div id="biblioteca">
-
                 <p><a href="{{ path('app_cancion') }}">🎵 Canciones</a></p>
                 <p><a href="{{ path('app_playlist') }}">🎶 Playlist</a></p>
                 <p><a href="{{ path('app_playlistCrear') }}">+ Crear playlist</a></p>
                 {% if app.user %}
                 <p><a href="{{ path('app_logout') }}">Cerrar sesión</a></p>
                 {% endif %}
-
             </div>
         </nav>
 
         <div id="centro">
 
-            <h2>Tus playlists</h2>
-            <div class="contenedor-canciones">
-                {%for playlist in playlists %}
-                    <div class="cancion" onclick="mostrarCancionesPlaylist('{{playlist.id}}')">
-                            <img src="{{ asset('img/nota.png') }}" alt="portada">
-                            <h3>{{ playlist.nombre }}</h3>
-                    </div>
-                {% else %}
-                    <p>No existen playlists</p>
-                {% endfor %}
-            </div>
+            <h2>Crear nueva Playlist</h2>
 
-            {% if app.user %}
-                <h2>Tus Playlists</h2>
+            <form action="{{ path('app_guardarPlaylist') }}" method="POST">
+
+                <div>
+                <h3>Nombre de la playlist</h3>
+                    <input type="text" id="nombre" name="nombre" required placeholder="Nombre de la playlist">
+                </div>
+
+                <h3>Selecciona las canciones</h3>
                 <div class="contenedor-canciones">
-                    {% for playlist in usuarioPlaylist %}
-                        <div class="cancion" onclick="mostrarCancionesPlaylist('{{ playlist.id }}')">
-                            <img src="{{ asset('img/nota.png') }}" alt="portada">
-                            <h3>{{ playlist.nombre }}</h3>
+                    {% for cancion in canciones %}
+                        <div class="cancion">
+                            <input type="checkbox" name="canciones[]" value="{{ cancion.id }}">
+                            <img src="{{ asset('img/' ~ cancion.portada) }}" alt="portada">
+                            <h3>{{ cancion.titulo }}</h3>
+                            <h5>{{ cancion.autor }}</h5>
                         </div>
-                    {% else %}
-                        <p>No existen playlists</p>
                     {% endfor %}
                 </div>
-            {% endif %}
+
+                <button type="submit">Crear Playlist</button>
+            </form>
+
         </div>
     </div>
 
-    <footer>
-    
-    <p>© 2025 MySpotify - Todos los derechos reservados.</p>
+    <audio id="audioPlayer" controls style="display: none;">
+        <source id="srcCancion" type="audio/mp3">
+    </audio>
 
+    <footer>
+        <p>© 2025 MySpotify - Todos los derechos reservados.</p>
     </footer>
 
     <script src="{{ asset('assets/js/script.js') }}"></script>
-    <!-- se escribe asi, no hace falta usar public en documentos estaticos. Symfony lo gestiona automaticamente -->
 
 </body>
 {% endblock %}
 </html>
-

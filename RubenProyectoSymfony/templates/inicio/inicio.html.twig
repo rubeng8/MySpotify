@@ -18,7 +18,6 @@
 
         </a>
 
-
         <div id="input">
 
             <input type="text" placeholder="¿Qué quieres reproducir?" id="inputBuscar">
@@ -26,7 +25,9 @@
 
         </div>
 
-         <img src="{{ asset('img/login1.png') }}" alt="Login" id="login" onclick="redirigirLogin()">
+        <a href="{{ path('app_login') }}">
+            <img src="{{ asset('img/login1.png') }}" alt="Login" id="login">
+        </a>
 
     </header>
     
@@ -40,6 +41,10 @@
             <div id="biblioteca">
                 <p><a href="{{ path('app_cancion') }}">🎵 Canciones</a></p>
                 <p><a href="{{ path('app_playlist') }}">🎶 Playlist</a></p>
+                <p><a href="{{ path('app_playlistCrear') }}">+ Crear playlist</a></p>
+                {% if app.user %}
+                <p><a href="{{ path('app_logout') }}">Cerrar sesión</a></p>
+                {% endif %}
 
             </div>
 
@@ -47,10 +52,10 @@
 
         <div id="centro">
 
-            <h2>Tus playlists</h2>
+            <h2>Playlists del Sistema</h2>
             <div class="contenedor-canciones">
-                {%for playlist in playlists %}
-                    <div class="cancion" onclick="mostrarCancionesPlaylist('{{playlist.id}}')">
+                {% for playlist in playlists %}
+                    <div class="cancion" onclick="mostrarCancionesPlaylist('{{ playlist.id }}')">
                             <img src="{{ asset('img/nota.png') }}" alt="portada">
                             <h3>{{ playlist.nombre }}</h3>
                     </div>
@@ -59,10 +64,10 @@
                 {% endfor %}
             </div>
 
-            <h2>Tus canciones</h2>
+            <h2>Canciones</h2>
             <div class="contenedor-canciones">
-                {%for cancion in canciones %}
-                    <div class="cancion" onclick="playSong('{{cancion.titulo}}')">
+                {% for cancion in canciones %}
+                    <div class="cancion" onclick="playSong('{{ cancion.titulo }}')">
                         <img src="{{ asset('img/' ~ cancion.portada) }}" alt="portada">
                         <h3>{{ cancion.titulo }}</h3>
                         <h5>{{ cancion.autor }}</h5>
@@ -71,6 +76,20 @@
                     <p>No existen canciones</p>
                 {% endfor %}
             </div>
+
+            {% if app.user %}
+                <h2>Tus Playlists</h2>
+                <div class="contenedor-canciones">
+                    {% for playlist in usuarioPlaylist %}
+                        <div class="cancion" onclick="mostrarCancionesPlaylist('{{ playlist.id }}')">
+                            <img src="{{ asset('img/nota.png') }}" alt="portada">
+                            <h3>{{ playlist.nombre }}</h3>
+                        </div>
+                    {% else %}
+                        <p>No existen playlists</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
         </div>
     </div>
 
@@ -83,12 +102,8 @@
 
     </footer>
 
-
-
     <script src="{{ asset('assets/js/script.js') }}"></script>
-    <!-- se escribe asi, no hace falta usar public en documentos estaticos. Symfony lo gestiona automaticamente -->
 
 </body>
 {% endblock %}
 </html>
-

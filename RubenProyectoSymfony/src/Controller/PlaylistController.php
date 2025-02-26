@@ -11,6 +11,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use App\Repository\PlaylistRepository;
 use App\Repository\PlaylistCancionRepository;
+use App\Repository\CancionRepository;
+use App\Entity\PlaylistCancion;
+use Symfony\Component\HttpFoundation\Request;
+
+
+
+
 
 final class PlaylistController extends AbstractController
 {
@@ -47,31 +54,30 @@ final class PlaylistController extends AbstractController
     }
 
     #[Route('/playlist', name: 'app_playlist')]
-    public function index(PlaylistRepository $repositoryPlaylist): Response
+    public function index(PlaylistRepository $repositoryPlaylist, PlaylistRepository $playlistRepository): Response
     {
+        $usuario = $this->getUser();
+
+        if ($usuario) {
+            $usuarioPlaylist = $playlistRepository->findBy(['propietario' => $usuario]);
+        } else {
+            $usuarioPlaylist = [];
+        }
+
         $playlists = $repositoryPlaylist->findAll();
 
         return $this->render('playlist/playlist.html.twig', [
             'playlists' => $playlists,
+            'usuarioPlaylist' => $usuarioPlaylist
         ]);
     }
 
 
-    #[Route('/playlist/{playlistId}', name: 'app_playlist_canciones')]
-    public function obtenerCancionesDePlaylist(int $playlistId, PlaylistCancionRepository $playlistCancionRepository): Response
-    {
 
-        $playlistCanciones = $playlistCancionRepository->findBy(['playlist' => $playlistId]);
-
-        return $this->render('playlistCancion/playlistCancion.html.twig', [
-            'playlistCanciones' => $playlistCanciones
-        ]);
-    }
-
-    
     #[Route('/playlist/obtener', name: 'playlist_obtener', methods: ['GET'])]
     public function playlistObtener(EntityManagerInterface $entityManager): JsonResponse
     {
+
         $playlistRepository = $entityManager->getRepository(Playlist::class);
         $playlists = $playlistRepository->findAll();
 
@@ -102,6 +108,72 @@ final class PlaylistController extends AbstractController
 
         return new JsonResponse($playlistsDisponibles);
     }
-    
 
+
+
+
+    #[Route('/playlist/crear/nueva', name: 'app_playlistCrear', methods: ['GET'])]
+    public function crearPlaylistForm(CancionRepository $cancionRepository): Response
+    {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        $canciones = $cancionRepository->findAll();
+
+        return $this->render('crearPlaylist/crearPlaylist.html.twig', [
+            'canciones' => $canciones,
+        ]);
+    }
+
+    #[Route('/playlist/crear/nueva', name: 'app_guardarPlaylist', methods: ['POST'])]
+    public function guardarPlaylist(Request $request, EntityManagerInterface $entityManager, CancionRepository $cancionRepository): Response
+    {
+        $usuario = $this->getUser();
+
+        $nombre = $request->request->get('nombre'); //get para datos normales simples 
+
+        $cancionesIds = $request->request->all('canciones', []); //all para arrays
+
+        if (!is_array($cancionesIds)) {
+    
+            $cancionesIds = [];
+        }
+
+        $playlist = new Playlist();
+        $playlist->setNombre($nombre);
+        $playlist->setPropietario($usuario);
+        $playlist->setVisibilidad(1);
+        $playlist->setReproducciones(0);
+        $playlist->setLikes(0);
+
+        foreach ($cancionesIds as $cancionId) {
+            $cancion = $cancionRepository->find($cancionId);
+
+            if ($cancion) {
+                $playlistCancion = new PlaylistCancion();
+                $playlistCancion->setCancion($cancion);
+                $playlistCancion->setPlaylist($playlist);
+
+                $entityManager->persist($playlistCancion);
+            }
+        }
+
+        $entityManager->persist($playlist);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_playlist');
+    }
+
+
+    #[Route('/playlist/{playlistId<\d+>}', name: 'app_playlist_canciones')] //d+ para que solo admita numeros (daba problemas con otras rutas)
+    public function obtenerCancionesDePlaylist(int $playlistId, PlaylistCancionRepository $playlistCancionRepository): Response
+    {
+
+        $playlistCanciones = $playlistCancionRepository->findBy(['playlist' => $playlistId]);
+
+        return $this->render('playlistCancion/playlistCancion.html.twig', [
+            'playlistCanciones' => $playlistCanciones
+        ]);
+    }
 }

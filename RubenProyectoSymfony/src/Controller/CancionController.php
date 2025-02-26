@@ -76,14 +76,26 @@ final class CancionController extends AbstractController
     #[Route('', name: 'app_inicio')]
     public function inicio(CancionRepository $repositoryCancion, PlaylistRepository $playlistRepository): Response
     {
-        $playlists=$playlistRepository->findAll();
+        $usuario = $this->getUser();
+
+        $playlists = $playlistRepository->findAll();
+
         $canciones = $repositoryCancion->findAll();
+
+        if ($usuario) {
+            $usuarioPlaylist = $playlistRepository->findBy(['propietario' => $usuario]);
+        } else {
+            $usuarioPlaylist = [];
+        }
+        
 
         return $this->render('inicio/inicio.html.twig', [
             'canciones' => $canciones,
-            'playlists' => $playlists
+            'playlists' => $playlists,
+            'usuarioPlaylist' => $usuarioPlaylist
         ]);
     }
+
 
 
 

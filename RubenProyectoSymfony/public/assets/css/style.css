@@ -216,7 +216,12 @@ footer {
     flex-grow: 1;
 }
 
-/* Estilos para el formulario de login */
+
+
+
+
+
+
 .login-container {
     display: flex;
     justify-content: center;
@@ -226,19 +231,19 @@ footer {
 }
 
 .login-card {
-    background-color: #333333; /* Gris oscuro para el fondo del login */
+    background-color: #333333; 
     padding: 30px;
     border-radius: 10px;
     width: 100%;
     max-width: 400px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     text-align: center;
-    color: white; /* Asegura que el texto sea blanco para contraste */
+    color: white; 
 }
 
 .login-title {
     font-size: 24px;
-    color: #1ed760; /* Verde brillante para el título */
+    color: #1ed760;
     margin-bottom: 20px;
     font-weight: bold;
 }
@@ -251,7 +256,7 @@ label {
     display: block;
     text-align: left;
     font-weight: bold;
-    color: #bbb; /* Color claro para las etiquetas */
+    color: #bbb; 
     margin-bottom: 5px;
 }
 
@@ -260,25 +265,25 @@ input[type="password"] {
     width: 100%;
     padding: 12px;
     font-size: 16px;
-    border: 1px solid #444; /* Borde gris oscuro para los inputs */
+    border: 1px solid #444; 
     border-radius: 25px;
     margin-top: 5px;
     outline: none;
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
-    color: white; /* Para que el texto dentro del input sea blanco */
-    background-color: #555; /* Fondo gris oscuro en los inputs */
+    color: white; 
+    background-color: #555; 
 }
 
 input[type="text"]:focus,
 input[type="password"]:focus {
-    border-color: #1ed760; /* Resaltar el borde con un verde brillante */
+    border-color: #1ed760; 
     box-shadow: 0 0 8px rgba(30, 215, 96, 0.5);
 }
 
 .submit-btn {
     width: 100%;
     padding: 12px;
-    background-color: #1ed760; /* Verde brillante para el botón */
+    background-color: #1ed760; 
     color: white;
     font-size: 16px;
     font-weight: bold;
@@ -289,7 +294,7 @@ input[type="password"]:focus {
 }
 
 .submit-btn:hover {
-    background-color: #077c30; /* Color verde más oscuro al pasar el ratón */
+    background-color: #077c30;
     transform: scale(1.05);
 }
 

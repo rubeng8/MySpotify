@@ -42,6 +42,9 @@
                 <p><a href="{{ path('app_cancion') }}">🎵 Canciones</a></p>
                 <p><a href="{{ path('app_playlist') }}">🎶 Playlist</a></p>
                 <p><a href="{{ path('app_playlistCrear') }}">+ Crear playlist</a></p>
+                {% if app.user %}
+                <p><a href="{{ path('app_logout') }}">Cerrar sesión</a></p>
+                {% endif %}
 
             </div>
 

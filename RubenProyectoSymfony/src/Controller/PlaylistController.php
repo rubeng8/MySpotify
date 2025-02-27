@@ -135,11 +135,6 @@ final class PlaylistController extends AbstractController
 
         $cancionesIds = $request->request->all('canciones', []); //all para arrays
 
-        if (!is_array($cancionesIds)) {
-    
-            $cancionesIds = [];
-        }
-
         $playlist = new Playlist();
         $playlist->setNombre($nombre);
         $playlist->setPropietario($usuario);

@@ -4,7 +4,6 @@ namespace App\EventListener;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
-use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 class LoginListener
@@ -20,6 +19,10 @@ class LoginListener
     public function onLogin(InteractiveLoginEvent $event)
     {
         $user = $event->getAuthenticationToken()->getUser();
-        $this->logger->info("Usuario {$user->getUserIdentifier()} ha iniciado sesión.");
+
+        date_default_timezone_set('Europe/Madrid');
+        $horaActual = date('Y-m-d H:i:s'); 
+
+        $this->logger->info("[$horaActual] Usuario {$user->getUserIdentifier()} ha iniciado sesión.");
     }
 }

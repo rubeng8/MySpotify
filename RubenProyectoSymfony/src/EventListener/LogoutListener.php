@@ -19,8 +19,11 @@ class LogoutListener
     public function onLogout(LogoutEvent $event)
     {
         $user = $event->getToken()?->getUser();
+
+        date_default_timezone_set('Europe/Madrid');
+        $horaActual = date('Y-m-d H:i:s'); 
         if ($user) {
-            $this->logger->info("Usuario {$user->getUserIdentifier()} ha cerrado sesión.");
+            $this->logger->info("[$horaActual] Usuario {$user->getUserIdentifier()} ha cerrado sesión.");
         }
     }
 }

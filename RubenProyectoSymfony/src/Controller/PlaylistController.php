@@ -14,7 +14,7 @@ use App\Repository\PlaylistCancionRepository;
 use App\Repository\CancionRepository;
 use App\Entity\PlaylistCancion;
 use Symfony\Component\HttpFoundation\Request;
-
+use App\Service\TraceabilityService;
 
 
 
@@ -30,6 +30,11 @@ final class PlaylistController extends AbstractController
     }
 */
 
+    private TraceabilityService $traceabilityService;
+    public function __construct(TraceabilityService $traceabilityService)
+    {
+        $this->traceabilityService = $traceabilityService;
+    }
 
 
     #[Route('/Playlist/new', name: 'app_crearPlaylist')]
@@ -141,6 +146,13 @@ final class PlaylistController extends AbstractController
         $playlist->setVisibilidad(1);
         $playlist->setReproducciones(0);
         $playlist->setLikes(0);
+
+        $usuario = $this->getUser();
+        if ($usuario) {
+            $this->traceabilityService->registrarEvento('crear_playlist', $usuario, [
+                'cancion' => $playlist->getNombre()
+            ]);
+        }
 
         foreach ($cancionesIds as $cancionId) {
             $cancion = $cancionRepository->find($cancionId);

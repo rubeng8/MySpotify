@@ -13,6 +13,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use App\Service\TraceabilityService;
 
 
 final class CancionController extends AbstractController
@@ -24,6 +25,12 @@ final class CancionController extends AbstractController
             'controller_name' => 'CancionController',
         ]);
     }**/
+
+    private TraceabilityService $traceabilityService;
+    public function __construct(TraceabilityService $traceabilityService)
+    {
+        $this->traceabilityService = $traceabilityService;
+    }
 
     #[Route('/cancion/new', name: 'app_crearCancion')]
     public function crearCancion(EntityManagerInterface $entityManager): Response
@@ -62,6 +69,14 @@ final class CancionController extends AbstractController
 
         $nombreArchivo = $cancion->getArchivo();
 
+        $usuario = $this->getUser();
+        if ($usuario) {
+            $this->traceabilityService->registrarEvento('escuchar_cancion', $usuario, [
+                'cancion' => $cancion->getTitulo(),
+                'autor' => $cancion->getAutor(),
+            ]);
+        }
+
         $musicDirectory = $this->getParameter('kernel.project_dir') . '/public/songs/';
         $filePath = $musicDirectory . $nombreArchivo;
 
@@ -87,7 +102,7 @@ final class CancionController extends AbstractController
         } else {
             $usuarioPlaylist = [];
         }
-        
+
 
         return $this->render('inicio/inicio.html.twig', [
             'canciones' => $canciones,

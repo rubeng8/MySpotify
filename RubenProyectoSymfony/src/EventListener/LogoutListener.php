@@ -18,7 +18,7 @@ class LogoutListener
     #[AsEventListener(event: 'security.logout')]
     public function onLogout(LogoutEvent $event)
     {
-        $user = $event->getToken()?->getUser();
+        $user = $event->getUser();
 
         date_default_timezone_set('Europe/Madrid');
         $horaActual = date('Y-m-d H:i:s'); 

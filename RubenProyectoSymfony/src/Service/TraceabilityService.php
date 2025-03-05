@@ -40,11 +40,6 @@ class TraceabilityService
         
         $log = "[$fecha] Usuario: $username / Evento: $evento / IP: $ip / Navegador: $navegador";
 
-        if (!empty($datos)) {
-            $info = json_encode($datos, JSON_UNESCAPED_UNICODE);
-            $log .= " / Detalles: $info";
-        }
-
         $this->logger->info($log);
     }
 }

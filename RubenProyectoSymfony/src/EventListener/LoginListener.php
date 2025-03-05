@@ -26,3 +26,4 @@ class LoginListener
         $this->logger->info("[$horaActual] Usuario {$user->getUserIdentifier()} ha iniciado sesión.");
     }
 }
+

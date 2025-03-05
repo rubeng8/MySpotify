@@ -9,9 +9,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\TraceabilityService;
+
 
 class EstadisticasController extends AbstractController
 {
+
+    private TraceabilityService $traceabilityService;
+    public function __construct(TraceabilityService $traceabilityService)
+    {
+        $this->traceabilityService = $traceabilityService;
+    }
+
     #[Route('/estadisticas', name: 'estadisticas')]
     public function index(PlaylistRepository $playlistRepository, PlaylistCancionRepository $playlistCancionRepository, UsuarioRepository $usuarioRepository ): Response {
 
@@ -40,6 +49,11 @@ class EstadisticasController extends AbstractController
         $canciones = $playlistCancionRepository->obtenerCancionesMasReproducidas();
         $estilos = $playlistCancionRepository->obtenerReproduccionesPorEstilo();
         $rangosEdad = $usuarioRepository->obtenerUsuariosPorRangoDeEdad();
+
+        $usuario = $this->getUser();
+        if ($usuario) {
+            $this->traceabilityService->registrarEvento('ver_estadisticas', $usuario);
+        }
 
         return new JsonResponse([
             'reproducciones' => $reproducciones,

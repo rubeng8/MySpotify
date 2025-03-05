@@ -14,19 +14,37 @@ class TraceabilityService
     }
 
 
-    public function registrarEvento(string $tipoEvento, object $usuario, array $datos = []): void
+    public function registrarEvento(string $evento, object $usuario, array $datos = []): void
     {
-        $ip = $_SERVER['REMOTE_ADDR'] ?? 'IP desconocida';
+        
         $fecha = date('Y-m-d H:i:s');
-        $username = method_exists($usuario, 'getUserIdentifier') ? $usuario->getUserIdentifier() : 'Usuario desconocido';
-
-        $mensaje = "[$fecha] Evento: $tipoEvento | Usuario: $username | IP: $ip";
-
-        if (!empty($datosAdicionales)) {
-            $detalles = json_encode($datos, JSON_UNESCAPED_UNICODE);
-            $mensaje .= " | Detalles: $detalles";
+        if (method_exists($usuario, 'getUserIdentifier')) {
+            $username = $usuario->getUserIdentifier();
+        } else {
+            $username = 'Usuario desconocido';
         }
 
-        $this->logger->info($mensaje);
+        if (isset($_SERVER['REMOTE_ADDR'])) {
+            $ip = $_SERVER['REMOTE_ADDR'];
+        } else {
+            $ip = 'IP desconocida';
+        }
+
+        if (isset($_SERVER['HTTP_USER_AGENT'])) {
+            $navegador = $_SERVER['HTTP_USER_AGENT'];
+        } else {
+            $navegador = 'Desconocido';
+        }
+        
+        
+        
+        $log = "[$fecha] Usuario: $username / Evento: $evento / IP: $ip / Navegador: $navegador";
+
+        if (!empty($datos)) {
+            $info = json_encode($datos, JSON_UNESCAPED_UNICODE);
+            $log .= " / Detalles: $info";
+        }
+
+        $this->logger->info($log);
     }
 }

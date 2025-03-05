@@ -179,6 +179,13 @@ final class PlaylistController extends AbstractController
 
         $playlistCanciones = $playlistCancionRepository->findBy(['playlist' => $playlistId]);
 
+        $usuario = $this->getUser();
+        if ($usuario) {
+            $this->traceabilityService->registrarEvento('ver_playlist', $usuario, [
+                'id_playlist' => $playlistId
+            ]);
+        }
+
         return $this->render('playlistCancion/playlistCancion.html.twig', [
             'playlistCanciones' => $playlistCanciones
         ]);

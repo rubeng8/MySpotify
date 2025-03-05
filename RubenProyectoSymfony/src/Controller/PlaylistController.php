@@ -150,7 +150,7 @@ final class PlaylistController extends AbstractController
         $usuario = $this->getUser();
         if ($usuario) {
             $this->traceabilityService->registrarEvento('crear_playlist', $usuario, [
-                'cancion' => $playlist->getNombre()
+                'playlist' => $playlist->getNombre()
             ]);
         }
 

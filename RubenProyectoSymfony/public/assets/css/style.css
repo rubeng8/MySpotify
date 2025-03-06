@@ -218,7 +218,18 @@ footer {
 
 
 
+#enlaceLogin{
 
+    color: white;
+    text-decoration: none;
+    padding-top: 10px;
+
+}
+
+
+#enlaceLogin:hover {
+    color: #1ed760;
+}
 
 .login-container {
     display: flex;

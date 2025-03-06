@@ -7,10 +7,9 @@
         <h2 class="mb-4">Estadísticas de Reproducción</h2>
 
         <style>
-        
             .row {
                 display: flex; 
-                padding-left:50px;
+                padding-left: 50px;
             }
 
             .chart-container {
@@ -66,9 +65,34 @@
             fetch("{{ path('estadisticas_datos') }}")
                 .then(response => response.json())
                 .then(data => {
-                    const chartOptions = { 
-                        responsive: true, 
-                        maintainAspectRatio: false, 
+                    const chartOptions = {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: {
+                                labels: {
+                                    color: 'white' // Color blanco para la leyenda
+                                }
+                            }
+                        },
+                        scales: {
+                            x: {
+                                ticks: {
+                                    color: 'white' // Color blanco para las etiquetas del eje X
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)' // Color de la cuadrícula del eje X
+                                }
+                            },
+                            y: {
+                                ticks: {
+                                    color: 'white' // Color blanco para las etiquetas del eje Y
+                                },
+                                grid: {
+                                    color: 'rgba(255, 255, 255, 0.1)' // Color de la cuadrícula del eje Y
+                                }
+                            }
+                        }
                     };
 
                     new Chart(document.getElementById('reproduccionesChart').getContext('2d'), {
@@ -142,5 +166,4 @@
                 .catch(error => console.error("Error al cargar los datos:", error));
         });
     </script>
-
 {% endblock %}

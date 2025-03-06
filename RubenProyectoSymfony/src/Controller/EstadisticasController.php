@@ -31,6 +31,11 @@ class EstadisticasController extends AbstractController
 
         $rangosEdad = $usuarioRepository->obtenerUsuariosPorRangoDeEdad();
 
+        $usuario = $this->getUser();
+        if ($usuario) {
+            $this->traceabilityService->registrarEvento('ver_estadisticas', $usuario);
+        }
+        
         return $this->render('estadisticas/estadisticas.html.twig', [
             'reproducciones' => $reproducciones,
             'likes' => $likes,

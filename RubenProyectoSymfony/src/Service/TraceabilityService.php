@@ -13,10 +13,8 @@ class TraceabilityService
         $this->logger = $logger;
     }
 
-
     public function registrarEvento(string $evento, object $usuario, array $datos = []): void
     {
-        
         $fecha = date('Y-m-d H:i:s');
         if (method_exists($usuario, 'getUserIdentifier')) {
             $username = $usuario->getUserIdentifier();
@@ -35,11 +33,16 @@ class TraceabilityService
         } else {
             $navegador = 'Desconocido';
         }
-        
-        
-        
+
         $log = "[$fecha] Usuario: $username / Evento: $evento / IP: $ip / Navegador: $navegador";
+
+        if (!empty($datos)) {
+            foreach ($datos as $key => $value) {
+                $log .= " / $key: $value";
+            }
+        }
 
         $this->logger->info($log);
     }
 }
+

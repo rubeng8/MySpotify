@@ -40,8 +40,14 @@
                 <p><a href="{{ path('app_cancion') }}">🎵 Canciones</a></p>
                 <p><a href="{{ path('app_playlist') }}">🎶 Playlist</a></p>
                 <p><a href="{{ path('app_playlistCrear') }}">+ Crear playlist</a></p>
+                {% if is_granted('ROLE_ADMIN') %}
+                     <p><a href="{{ path('admin') }}">⚙️ Dashboard</a></p>
+                {% endif %}
+                {% if is_granted('ROLE_MANAGER') %}
+                     <p><a href="{{ path('estadisticas') }}">Estadísticas</a></p>
+                {% endif %}
                 {% if app.user %}
-                <p><a href="{{ path('app_logout') }}">Cerrar sesión</a></p>
+                    <p><a href="{{ path('app_logout') }}">Cerrar sesión</a></p>
                 {% endif %}
 
             </div>

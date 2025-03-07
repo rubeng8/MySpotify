@@ -172,17 +172,37 @@ final class PlaylistController extends AbstractController
         return $this->redirectToRoute('app_playlist');
     }
 
+    #[Route('/playlist/reproducir/{playlistId}', name: 'incrementar_reproducciones_playlist', methods: ['POST'])]
+    public function incrementarReproduccionesPlaylist(int $playlistId, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $playlistRepository = $entityManager->getRepository(Playlist::class);
+        $playlist = $playlistRepository->find($playlistId);
+
+        if (!$playlist) {
+            return new JsonResponse(['message' => 'Playlist no encontrada'], JsonResponse::HTTP_NOT_FOUND);
+        }
+
+        $playlist->setReproducciones($playlist->getReproducciones() + 1);
+
+        $entityManager->persist($playlist);
+        $entityManager->flush();
+
+        return new JsonResponse(['message' => 'Reproducción de playlist registrada'], JsonResponse::HTTP_OK);
+    }
+
 
     #[Route('/playlist/{playlistId<\d+>}', name: 'app_playlist_canciones')] //d+ para que solo admita numeros (daba problemas con otras rutas)
-    public function obtenerCancionesDePlaylist(int $playlistId, PlaylistCancionRepository $playlistCancionRepository): Response
+    public function obtenerCancionesDePlaylist(int $playlistId, PlaylistCancionRepository $playlistCancionRepository, PlaylistRepository $playlistRepository): Response
     {
 
         $playlistCanciones = $playlistCancionRepository->findBy(['playlist' => $playlistId]);
+        $playlist=$playlistRepository->find($playlistId);
 
         $usuario = $this->getUser();
         if ($usuario) {
             $this->traceabilityService->registrarEvento('ver_playlist', $usuario, [
-                'id_playlist' => $playlistId
+                'id_playlist' => $playlistId,
+                'nombre'=>$playlist->getNombre()
             ]);
         }
 

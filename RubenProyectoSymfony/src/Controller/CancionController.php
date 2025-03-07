@@ -87,6 +87,20 @@ final class CancionController extends AbstractController
         return new BinaryFileResponse($filePath);
     }
 
+    #[Route('/cancion/reproducir/{tituloCancion}', name: 'incrementar_reproducciones', methods: ['POST'])]
+    public function incrementarReproducciones(string $tituloCancion, EntityManagerInterface $entityManager): JsonResponse
+    {
+        $cancionRepository = $entityManager->getRepository(Cancion::class);
+        $cancion = $cancionRepository->findOneBy(['titulo' => $tituloCancion]);
+
+        $cancion->setReproducciones($cancion->getReproducciones() + 1);
+
+        $entityManager->persist($cancion);
+        $entityManager->flush();
+
+        return new JsonResponse(['message' => 'Reproducción registrada'], JsonResponse::HTTP_OK);
+    }
+
 
     #[Route('', name: 'app_inicio')]
     public function inicio(CancionRepository $repositoryCancion, PlaylistRepository $playlistRepository): Response
@@ -102,7 +116,6 @@ final class CancionController extends AbstractController
         } else {
             $usuarioPlaylist = [];
         }
-
 
         return $this->render('inicio/inicio.html.twig', [
             'canciones' => $canciones,

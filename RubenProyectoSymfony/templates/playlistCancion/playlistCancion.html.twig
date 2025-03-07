@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Reproductor de Música</title>
- <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reproductor de Música</title>
+    <link rel="stylesheet" href="{{ asset('assets/css/style.css') }}">
 </head>
 
 {% block body %}
@@ -13,56 +13,50 @@
 
     <header>
         <a href="{{ path('app_inicio') }}">
-
             <img src="{{ asset('img/logo1.png') }}" alt="Logo" id="logo">
-
         </a>
 
         <div id="input">
-
             <input type="text" placeholder="¿Qué quieres reproducir?" id="inputBuscar">
             <button id="idBuscar" onclick="buscarCancion()">Buscar</button>
-
         </div>
 
         <a href="{{ path('app_login') }}">
             <img src="{{ asset('img/login1.png') }}" alt="Login" id="login">
         </a>
-
     </header>
-    
 
     <div id="container">
-
-
         <nav>
             <h3>|| Tu biblioteca</h3>
-
             <div id="biblioteca">
                 <p><a href="{{ path('app_cancion') }}">🎵 Canciones</a></p>
                 <p><a href="{{ path('app_playlist') }}">🎶 Playlist</a></p>
                 <p><a href="{{ path('app_playlistCrear') }}">+ Crear playlist</a></p>
-                {% if app.user %}
-                <p><a href="{{ path('app_logout') }}">Cerrar sesión</a></p>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <p><a href="{{ path('admin') }}">⚙️ Dashboard</a></p>
                 {% endif %}
-
+                {% if is_granted('ROLE_MANAGER') %}
+                    <p><a href="{{ path('estadisticas') }}">Estadísticas</a></p>
+                {% endif %}
+                {% if app.user %}
+                    <p><a href="{{ path('app_logout') }}">Cerrar sesión</a></p>
+                {% endif %}
             </div>
-
         </nav>
 
         <div id="centro">
-
             <h2>Playlist</h2>
             <div class="contenedor-canciones">
                 {% for playlistCancion in playlistCanciones %}
-                <div class="cancion" onclick="playSong('{{playlistCancion.cancion.titulo}}')">
-                    <img src="{{ asset('img/' ~ playlistCancion.cancion.portada) }}" alt="portada">
-                    <h3>{{ playlistCancion.cancion.titulo }}</h3>
-                    <h5>{{ playlistCancion.cancion.autor }}</h5>
-                </div>
-            {% else %}
-                <p>No hay canciones en esta playlist.</p>
-            {% endfor %}
+                    <div class="cancion" onclick="playSong('{{ playlistCancion.cancion.titulo }}', {{ playlistCancion.playlist.id }})">
+                        <img src="{{ asset('img/' ~ playlistCancion.cancion.portada) }}" alt="portada">
+                        <h3>{{ playlistCancion.cancion.titulo }}</h3>
+                        <h5>{{ playlistCancion.cancion.autor }}</h5>
+                    </div>
+                {% else %}
+                    <p>No hay canciones en esta playlist.</p>
+                {% endfor %}
             </div>
         </div>
     </div>
@@ -71,17 +65,11 @@
         <source id="srcCancion" type="audio/mp3">
     </audio>
     <footer>
-    
-    <p>© 2025 MySpotify - Todos los derechos reservados.</p>
-
+        <p>© 2025 MySpotify - Todos los derechos reservados.</p>
     </footer>
 
-
-
     <script src="{{ asset('assets/js/script.js') }}"></script>
-    <!-- se escribe asi, no hace falta usar public en documentos estaticos. Symfony lo gestiona automaticamente -->
 
 </body>
 {% endblock %}
 </html>
-

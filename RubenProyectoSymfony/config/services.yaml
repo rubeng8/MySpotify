@@ -19,8 +19,18 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+    # Definimos el listener explícitamente
+    App\Service\TraceabilityService:
+        arguments:
+            $logger: '@monolog.logger.traceability'
 
-    App\Service\TraceabilityService: ~
+    
+    App\EventListener\LoginSuccessListener:
+        arguments:
+            $logger: '@monolog.logger.traceability'  # Asegúrate de que se inyecte el logger de traceability
+        tags:
+            - { name: kernel.event_listener, event: Symfony\Component\Security\Http\Event\LoginSuccessEvent, method: registroLogin }
+            - { name: kernel.event_listener, event: Symfony\Component\Security\Http\Event\LogoutEvent, method: registroLogout }
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

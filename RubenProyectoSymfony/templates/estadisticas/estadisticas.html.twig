@@ -6,10 +6,19 @@
     <div class="container text-center">
         <h2 class="mb-4">Estadísticas de Reproducción</h2>
 
+        <!-- Agregar aquí el enlace para cerrar sesión, de manera similar a la página de inicio -->
+        {% if app.user %}
+            <p><a href="{{ path('app_logout') }}">Cerrar sesión</a></p>
+        {% endif %}
+
         <style>
             .row {
                 display: flex; 
                 padding-left: 50px;
+            }
+            #graficos{
+
+                padding-top:10px;
             }
 
             .chart-container {
@@ -17,10 +26,12 @@
                 max-width: 300px;
                 height: 250px;
                 margin: auto;
-                padding: 40px;
+                padding-left: 40px;
+                padding-right:40px;
+                padding-bottom:40px;
             }
         </style>
-
+        <div id="graficos">
         <div class="row">
             <div class="col-md-4">
                 <div class="chart-container">
@@ -56,6 +67,8 @@
                 </div>
             </div>
         </div>
+        </div>
+
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

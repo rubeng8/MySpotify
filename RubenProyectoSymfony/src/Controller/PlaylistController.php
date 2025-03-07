@@ -77,8 +77,6 @@ final class PlaylistController extends AbstractController
         ]);
     }
 
-
-
     #[Route('/playlist/obtener', name: 'playlist_obtener', methods: ['GET'])]
     public function playlistObtener(EntityManagerInterface $entityManager): JsonResponse
     {
@@ -113,9 +111,6 @@ final class PlaylistController extends AbstractController
 
         return new JsonResponse($playlistsDisponibles);
     }
-
-
-
 
     #[Route('/playlist/crear/nueva', name: 'app_playlistCrear', methods: ['GET'])]
     public function crearPlaylistForm(CancionRepository $cancionRepository): Response

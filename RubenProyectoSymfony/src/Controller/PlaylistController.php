@@ -205,4 +205,42 @@ final class PlaylistController extends AbstractController
             'playlistCanciones' => $playlistCanciones
         ]);
     }
+
+    #[Route('/playlist/json', name: 'app_json', methods: ['GET'])]
+    public function getJSONPlayList(PlaylistRepository $playlistRepository): JsonResponse
+    {
+        $playlist = $playlistRepository->findOneBy(['nombre' => 'Mix']);
+    
+        if (!$playlist) {
+            return new JsonResponse(['error' => 'Playlist no encontrada'], JsonResponse::HTTP_NOT_FOUND);
+        }
+    
+        $cancionesArray = [];
+    
+        foreach ($playlist->getPlaylistCancions() as $playlistCancion) {
+            $cancion = $playlistCancion->getCancion();
+            $cancionesArray[] = [
+                'id' => $cancion->getId(),
+                'titulo' => $cancion->getTitulo(),
+                'autor' => $cancion->getAutor(),
+                'imagen_portada' => $cancion->getPortada(),
+                'likes'=>$cancion->getLikes(),
+                'audio' => $cancion->getArchivo()
+            ];
+        }
+    
+        $data = [
+            'playlists' => [
+                [
+                    'nombre' => $playlist->getNombre(),
+                    'canciones' => $cancionesArray
+                ]
+            ]
+        ];
+    
+        return new JsonResponse($data);
+    }
+    
 }
+
+

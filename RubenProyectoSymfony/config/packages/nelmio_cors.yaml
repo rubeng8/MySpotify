@@ -1,0 +1,12 @@
+nelmio_cors:
+    defaults:
+        allow_credentials: false
+        allow_origin: ['http://localhost:4200']  # Permite solicitudes desde Angular
+        allow_headers: ['Content-Type', 'Authorization']  # Puedes añadir más cabeceras si es necesario
+        allow_methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']  # Métodos HTTP permitidos
+        max_age: 3600  # Opcional, controla cuánto tiempo se cachea la política CORS en el navegador
+
+    # Puedes configurar otras rutas si es necesario
+    paths:
+        '^/api/':  # Ajusta esto a la ruta de tus APIs
+            allow_origin: ['http://localhost:4200']

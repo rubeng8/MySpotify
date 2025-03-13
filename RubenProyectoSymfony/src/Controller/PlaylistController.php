@@ -15,6 +15,8 @@ use App\Repository\CancionRepository;
 use App\Entity\PlaylistCancion;
 use Symfony\Component\HttpFoundation\Request;
 use App\Service\TraceabilityService;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\CacheItem;
 
 
 
@@ -191,13 +193,13 @@ final class PlaylistController extends AbstractController
     {
 
         $playlistCanciones = $playlistCancionRepository->findBy(['playlist' => $playlistId]);
-        $playlist=$playlistRepository->find($playlistId);
+        $playlist = $playlistRepository->find($playlistId);
 
         $usuario = $this->getUser();
         if ($usuario) {
             $this->traceabilityService->registrarEvento('ver_playlist', $usuario, [
                 'id_playlist' => $playlistId,
-                'nombre'=>$playlist->getNombre()
+                'nombre' => $playlist->getNombre()
             ]);
         }
 
@@ -209,38 +211,46 @@ final class PlaylistController extends AbstractController
     #[Route('/playlist/json', name: 'app_json', methods: ['GET'])]
     public function getJSONPlayList(PlaylistRepository $playlistRepository): JsonResponse
     {
-        $playlist = $playlistRepository->findOneBy(['nombre' => 'Mix']);
-    
-        if (!$playlist) {
-            return new JsonResponse(['error' => 'Playlist no encontrada'], JsonResponse::HTTP_NOT_FOUND);
-        }
-    
-        $cancionesArray = [];
-    
-        foreach ($playlist->getPlaylistCancions() as $playlistCancion) {
-            $cancion = $playlistCancion->getCancion();
-            $cancionesArray[] = [
-                'id' => $cancion->getId(),
-                'titulo' => $cancion->getTitulo(),
-                'autor' => $cancion->getAutor(),
-                'imagen_portada' => $cancion->getPortada(),
-                'likes'=>$cancion->getLikes(),
-                'audio' => $cancion->getArchivo()
-            ];
-        }
-    
-        $data = [
-            'playlists' => [
-                [
-                    'nombre' => $playlist->getNombre(),
-                    'canciones' => $cancionesArray
+        $cache = new FilesystemAdapter();
+        $cacheKey = 'playlist_mix'; 
+
+        $playlistCache = $cache->getItem($cacheKey);
+
+        if (!$playlistCache->isHit()) {
+            $playlist = $playlistRepository->findOneBy(['nombre' => 'Mix']);
+
+            if (!$playlist) {
+                return new JsonResponse(['error' => 'Playlist no encontrada'], JsonResponse::HTTP_NOT_FOUND);
+            }
+
+            $cancionesArray = [];
+            foreach ($playlist->getPlaylistCancions() as $playlistCancion) {
+                $cancion = $playlistCancion->getCancion();
+                $cancionesArray[] = [
+                    'id' => $cancion->getId(),
+                    'titulo' => $cancion->getTitulo(),
+                    'autor' => $cancion->getAutor(),
+                    'imagen_portada' => $cancion->getPortada(),
+                    'likes' => $cancion->getLikes(),
+                    'audio' => $cancion->getArchivo()
+                ];
+            }
+
+            $data = [
+                'playlists' => [
+                    [
+                        'nombre' => $playlist->getNombre(),
+                        'canciones' => $cancionesArray
+                    ]
                 ]
-            ]
-        ];
-    
+            ];
+            $playlistCache->set($data);
+            $playlistCache->expiresAfter(5);
+            $cache->save($playlistCache);
+        } else {
+            $data = $playlistCache->get();
+        }
+
         return new JsonResponse($data);
     }
-    
 }
-
-

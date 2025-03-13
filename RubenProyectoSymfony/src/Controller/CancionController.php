@@ -141,23 +141,17 @@ final class CancionController extends AbstractController
      #[Route('/api/cancion/{titulo}/like', name: 'increment_like', methods: ['POST'])]
     public function incrementarLike(string $titulo, EntityManagerInterface $entityManager): JsonResponse
     {
-        // Buscar la canción por su título
         $cancionRepository = $entityManager->getRepository(Cancion::class);
         $cancion = $cancionRepository->findOneBy(['titulo' => $titulo]);
 
-        // Verificar si la canción fue encontrada
         if (!$cancion) {
             return new JsonResponse(['message' => 'Canción no encontrada'], JsonResponse::HTTP_NOT_FOUND);
         }
-
-        // Incrementar el número de "likes"
         $cancion->setLikes($cancion->getLikes() + 1);
 
-        // Persistir los cambios y actualizar la base de datos
         $entityManager->persist($cancion);
         $entityManager->flush();
 
-        // Retornar la cantidad de "likes" actualizada
         return new JsonResponse(['likes' => $cancion->getLikes()]);
     }
 }
